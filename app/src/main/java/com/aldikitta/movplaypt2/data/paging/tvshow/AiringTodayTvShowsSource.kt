@@ -7,7 +7,7 @@ import com.aldikitta.movplaypt2.model.tvshow.TvShow
 import retrofit2.HttpException
 import java.io.IOException
 
-class AiringTodayTvShowSource(private val api: TvShowTMDBApi) :
+class AiringTodayTvShowsSource(private val api: TvShowTMDBApi) :
     PagingSource<Int, TvShow>() {
     override fun getRefreshKey(state: PagingState<Int, TvShow>): Int? {
         return state.anchorPosition
@@ -28,5 +28,4 @@ class AiringTodayTvShowSource(private val api: TvShowTMDBApi) :
             return LoadResult.Error(exception)
         }
     }
-
 }
