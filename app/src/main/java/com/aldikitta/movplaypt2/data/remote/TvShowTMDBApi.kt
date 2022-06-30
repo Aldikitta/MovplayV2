@@ -1,7 +1,7 @@
-package com.aldikitta.movplaypt2.data.repository
+package com.aldikitta.movplaypt2.data.remote
 
 import com.aldikitta.movplaypt2.BuildConfig.API_KEY
-import com.aldikitta.movplaypt2.data.repository.responses.tvshowresponses.TVShowResponse
+import com.aldikitta.movplaypt2.data.remote.responses.tvshowresponses.TVShowResponse
 import com.aldikitta.movplaypt2.util.Constants.LANGUAGE_EN
 import com.aldikitta.movplaypt2.util.Constants.STARTING_PAGE_INDEX
 import retrofit2.http.GET

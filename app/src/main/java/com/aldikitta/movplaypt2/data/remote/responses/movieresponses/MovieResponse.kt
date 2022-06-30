@@ -1,4 +1,4 @@
-package com.aldikitta.movplaypt2.data.repository.responses.movieresponses
+package com.aldikitta.movplaypt2.data.remote.responses.movieresponses
 
 import com.aldikitta.movplaypt2.model.movie.Movie
 import com.google.gson.annotations.SerializedName

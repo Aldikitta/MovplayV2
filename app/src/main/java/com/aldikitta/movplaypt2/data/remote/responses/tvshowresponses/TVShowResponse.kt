@@ -1,4 +1,4 @@
-package com.aldikitta.movplaypt2.data.repository.responses.tvshowresponses
+package com.aldikitta.movplaypt2.data.remote.responses.tvshowresponses
 
 import com.aldikitta.movplaypt2.model.tvshow.TvShow
 import com.google.gson.annotations.SerializedName
