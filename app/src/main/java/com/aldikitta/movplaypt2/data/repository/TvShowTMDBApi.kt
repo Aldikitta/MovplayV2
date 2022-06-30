@@ -13,4 +13,11 @@ interface TvShowTMDBApi {
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") language: String = LANGUAGE_EN
     )
+
+    @GET("trending/tv/day")
+    suspend fun getTrendingTvShows(
+        @Query("page") page: Int = STARTING_PAGE_INDEX,
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = LANGUAGE_EN
+    )
 }
