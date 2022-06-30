@@ -7,7 +7,7 @@ import com.aldikitta.movplaypt2.util.Constants.STARTING_PAGE_INDEX
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface TMDBApi {
+interface MovieTMDBApi {
     @GET("trending/movie/day")
     suspend fun getTrendingTodayMovies(
         @Query("page") page: Int = STARTING_PAGE_INDEX,
