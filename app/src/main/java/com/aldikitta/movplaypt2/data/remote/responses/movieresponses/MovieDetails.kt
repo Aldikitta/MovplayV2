@@ -1,5 +1,6 @@
 package com.aldikitta.movplaypt2.data.remote.responses.movieresponses
 
+import com.aldikitta.movplaypt2.model.Genre
 import com.google.gson.annotations.SerializedName
 
 data class MovieDetails(
