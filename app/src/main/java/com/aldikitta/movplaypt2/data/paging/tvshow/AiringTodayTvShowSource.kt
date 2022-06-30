@@ -1,4 +1,4 @@
-package com.aldikitta.movplaypt2.data.paging
+package com.aldikitta.movplaypt2.data.paging.tvshow
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
