@@ -7,7 +7,7 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface FavoriteDao {
+interface FavoritesDao {
     @Insert
     suspend fun insertFavorite(favorite: Favorite)
 
@@ -15,7 +15,7 @@ interface FavoriteDao {
     fun getAllFavorites(): LiveData<List<Favorite>>
 
     @Query("SELECT * FROM favorites_table WHERE mediaId == :mediaId")
-    fun getAFavorites(mediaId: Int): LiveData<Favorite?>
+    fun getAFavorite(mediaId: Int): LiveData<Favorite?>
 
     @Query("SELECT favorite FROM favorites_table WHERE mediaId = :mediaId")
     fun isFavorite(mediaId: Int): LiveData<Boolean>
