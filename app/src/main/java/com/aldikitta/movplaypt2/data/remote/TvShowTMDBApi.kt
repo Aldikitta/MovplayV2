@@ -2,6 +2,7 @@ package com.aldikitta.movplaypt2.data.remote
 
 import com.aldikitta.movplaypt2.BuildConfig.API_KEY
 import com.aldikitta.movplaypt2.data.remote.responses.CreditResponse
+import com.aldikitta.movplaypt2.data.remote.responses.GenresResponse
 import com.aldikitta.movplaypt2.data.remote.responses.tvshowresponses.TVShowResponse
 import com.aldikitta.movplaypt2.data.remote.responses.tvshowresponses.TvShowDetails
 import com.aldikitta.movplaypt2.util.Constants.LANGUAGE_EN
@@ -59,4 +60,10 @@ interface TvShowTMDBApi {
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") language: String = LANGUAGE_EN
     ): CreditResponse
+
+    @GET("genre/tv/list")
+    suspend fun getTvShowGenres(
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = LANGUAGE_EN
+    ): GenresResponse
 }
