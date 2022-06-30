@@ -1,4 +1,4 @@
-package com.aldikitta.movplaypt2
+package com.aldikitta.movplaypt2.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
