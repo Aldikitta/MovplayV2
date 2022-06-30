@@ -1,6 +1,7 @@
 package com.aldikitta.movplaypt2.data.remote
 
 import com.aldikitta.movplaypt2.BuildConfig.API_KEY
+import com.aldikitta.movplaypt2.data.remote.responses.CreditResponse
 import com.aldikitta.movplaypt2.data.remote.responses.movieresponses.MovieDetails
 import com.aldikitta.movplaypt2.data.remote.responses.movieresponses.MovieResponse
 import com.aldikitta.movplaypt2.util.Constants.LANGUAGE_EN
@@ -51,4 +52,11 @@ interface MovieTMDBApi {
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") language: String = LANGUAGE_EN
     ): MovieResponse
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = LANGUAGE_EN
+    ): CreditResponse
 }
