@@ -13,4 +13,11 @@ interface TMDBApi {
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") language: String = "en"
     ): MovieResponse
+
+    @GET("trending/popular")
+    suspend fun getPopularMovies(
+        @Query("page") page: Int = STARTING_PAGE_INDEX,
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String ="en"
+    )
 }
