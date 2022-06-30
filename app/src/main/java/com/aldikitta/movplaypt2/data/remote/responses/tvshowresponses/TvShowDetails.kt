@@ -3,7 +3,7 @@ package com.aldikitta.movplaypt2.data.remote.responses.tvshowresponses
 import com.aldikitta.movplaypt2.model.Genre
 import com.google.gson.annotations.SerializedName
 
-data class TvSeriesDetails(
+data class TvShowDetails(
     @SerializedName("adult")
     val adult: Boolean,
     @SerializedName("backdrop_path")

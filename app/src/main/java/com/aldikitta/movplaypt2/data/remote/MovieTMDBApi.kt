@@ -1,6 +1,7 @@
 package com.aldikitta.movplaypt2.data.remote
 
 import com.aldikitta.movplaypt2.BuildConfig.API_KEY
+import com.aldikitta.movplaypt2.data.remote.responses.movieresponses.MovieDetails
 import com.aldikitta.movplaypt2.data.remote.responses.movieresponses.MovieResponse
 import com.aldikitta.movplaypt2.util.Constants.LANGUAGE_EN
 import com.aldikitta.movplaypt2.util.Constants.STARTING_PAGE_INDEX
@@ -14,7 +15,7 @@ interface MovieTMDBApi {
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String = API_KEY,
         @Query("language") language: String = LANGUAGE_EN
-    )
+    ): MovieDetails
 
     @GET("trending/movie/day")
     suspend fun getTrendingTodayMovies(
