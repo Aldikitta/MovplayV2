@@ -1,4 +1,4 @@
-package com.aldikitta.movplaypt2.model
+package com.aldikitta.movplaypt2.model.movie
 
 import com.google.gson.annotations.SerializedName
 

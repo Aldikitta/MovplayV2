@@ -1,6 +1,6 @@
-package com.aldikitta.movplaypt2.data.repository.responses
+package com.aldikitta.movplaypt2.data.repository.responses.movieresponses
 
-import com.aldikitta.movplaypt2.model.Movie
+import com.aldikitta.movplaypt2.model.movie.Movie
 import com.google.gson.annotations.SerializedName
 
 data class MovieResponse(
