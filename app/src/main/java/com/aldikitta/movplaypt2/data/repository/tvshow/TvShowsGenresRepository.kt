@@ -1,4 +1,4 @@
-package com.aldikitta.movplaypt2.data.repository.movie
+package com.aldikitta.movplaypt2.data.repository.tvshow
 
 import com.aldikitta.movplaypt2.data.remote.TvShowTMDBApi
 import com.aldikitta.movplaypt2.data.remote.responses.GenresResponse
