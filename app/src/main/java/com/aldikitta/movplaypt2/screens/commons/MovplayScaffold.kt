@@ -52,12 +52,5 @@ fun MovplayScaffold(
         }
     ) { paddingValues ->
         content(paddingValues)
-
     }
-}
-
-@Composable
-fun currentRoute(navController: NavController): String? {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    return navBackStackEntry?.destination?.route?.substringBeforeLast("/")
 }
