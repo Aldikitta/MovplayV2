@@ -10,6 +10,7 @@ import com.aldikitta.movplaypt2.data.repository.tvshow.TvShowsGenresRepository
 import com.aldikitta.movplaypt2.data.repository.tvshow.TvShowsRepository
 import com.aldikitta.movplaypt2.model.Genre
 import com.aldikitta.movplaypt2.model.movie.Movie
+import com.aldikitta.movplaypt2.model.tvshow.TvShow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -56,4 +57,25 @@ class HomeViewModel @Inject constructor(
 
     private val _moviesGenres = mutableStateOf<List<Genre>>(emptyList())
     val moviesGenres: State<List<Genre>> = _moviesGenres
+
+    /**
+     * Tv Shows states code block
+     */
+    private val _trendingTvShows = mutableStateOf<Flow<PagingData<TvShow>>>(emptyFlow())
+    val trendingTvShows: State<Flow<PagingData<TvShow>>> = _trendingTvShows
+
+    private val _onAirTvShows = mutableStateOf<Flow<PagingData<TvShow>>>(emptyFlow())
+    val onAirTvShows: State<Flow<PagingData<TvShow>>> = _onAirTvShows
+
+    private val _topRatedTvShows = mutableStateOf<Flow<PagingData<TvShow>>>(emptyFlow())
+    val topRatedTvShows: State<Flow<PagingData<TvShow>>> = _topRatedTvShows
+
+    private val _airingTvShows = mutableStateOf<Flow<PagingData<TvShow>>>(emptyFlow())
+    val airingTvShows: State<Flow<PagingData<TvShow>>> = _airingTvShows
+
+    private val _popularTvShows = mutableStateOf<Flow<PagingData<TvShow>>>(emptyFlow())
+    val popularTvShows: State<Flow<PagingData<TvShow>>> = _popularTvShows
+
+    private val _tvShowsGenres = mutableStateOf<List<Genre>>(emptyList())
+    val tvShowsGenres: State<List<Genre>> = _tvShowsGenres
 }
