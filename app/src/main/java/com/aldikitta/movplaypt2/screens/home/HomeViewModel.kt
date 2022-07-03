@@ -3,7 +3,10 @@ package com.aldikitta.movplaypt2.screens.home
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.filter
 import com.aldikitta.movplaypt2.data.repository.movie.MoviesGenresRepository
 import com.aldikitta.movplaypt2.data.repository.movie.MoviesRepository
 import com.aldikitta.movplaypt2.data.repository.tvshow.TvShowsGenresRepository
@@ -11,9 +14,12 @@ import com.aldikitta.movplaypt2.data.repository.tvshow.TvShowsRepository
 import com.aldikitta.movplaypt2.model.Genre
 import com.aldikitta.movplaypt2.model.movie.Movie
 import com.aldikitta.movplaypt2.model.tvshow.TvShow
+import com.aldikitta.movplaypt2.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -78,4 +84,101 @@ class HomeViewModel @Inject constructor(
 
     private val _tvShowsGenres = mutableStateOf<List<Genre>>(emptyList())
     val tvShowsGenres: State<List<Genre>> = _tvShowsGenres
+
+    init {
+        //movies
+        getTrendingMovies(genreId = null)
+        getNowPlayingMovies(genreId = null)
+        getUpComingMovies(genreId = null)
+        getTopRatedMovies(genreId = null)
+        getPopularMovies(genreId = null)
+        getMoviesGenres()
+    }
+
+    /**
+     * Movies code block
+     */
+    fun getTrendingMovies(genreId: Int?) {
+        viewModelScope.launch {
+            _trendingMovies.value = if (genreId != null) {
+                moviesRepository.getTrendingMoviesThisWeek().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                moviesRepository.getTrendingMoviesThisWeek().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getUpComingMovies(genreId: Int?) {
+        viewModelScope.launch {
+            _upcomingMovies.value = if (genreId != null) {
+                moviesRepository.getUpcomingMovies().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                moviesRepository.getUpcomingMovies().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getTopRatedMovies(genreId: Int?) {
+        viewModelScope.launch {
+            _topRatedMovies.value = if (genreId != null) {
+                moviesRepository.getTopRatedMovies().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                moviesRepository.getTopRatedMovies().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getNowPlayingMovies(genreId: Int?) {
+        viewModelScope.launch {
+            _nowPlayingMovies.value = if (genreId != null) {
+                moviesRepository.getNowPlayingMovies().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                moviesRepository.getNowPlayingMovies().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getPopularMovies(genreId: Int?) {
+        viewModelScope.launch {
+            _popularMovies.value = if (genreId != null) {
+                moviesRepository.getPopularMovies().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                moviesRepository.getPopularMovies().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getMoviesGenres() {
+        viewModelScope.launch {
+            when (val result = moviesGenresRepository.getMoviesGenres()) {
+                is Resource.Success -> {
+                    _moviesGenres.value = result.data?.genres!!
+                }
+                is Resource.Error -> {
+
+                }
+                else -> {}
+            }
+        }
+    }
 }
