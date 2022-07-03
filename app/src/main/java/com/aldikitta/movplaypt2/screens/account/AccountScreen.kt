@@ -1,12 +1,14 @@
 package com.aldikitta.movplaypt2.screens.account
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -14,10 +16,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-//import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.aldikitta.movplaypt2.R
 import com.aldikitta.movplaypt2.model.AccountItem
@@ -34,6 +37,7 @@ fun AccountScreen(
     navigator: DestinationsNavigator,
     navController: NavController
 ) {
+    val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val showSocialsDialog = remember { mutableStateOf(false) }
@@ -107,12 +111,36 @@ fun AccountScreen(
                         Text(text = "Stay Connected")
                     },
                     text = {
-                      Column() {
-                          Row(
-                              modifier = Modifier.clickable {  }
-                          ) {
-                              
-                          }
+                      Column {
+                          val intent = Intent(Intent.ACTION_VIEW)
+                          Divider()
+                          DialogsItems(
+                            icon = Icons.Filled.Person,
+                              title = "Linkedin",
+                              onClick = {
+                                  intent.data =
+                                      Uri.parse("https://twitter.com/_joelkanyi")
+                                  ContextCompat.startActivity(context, intent, null)
+                              }
+                          )
+                          DialogsItems(
+                              icon = Icons.Filled.Person,
+                              title = "Github",
+                              onClick = {
+                                  intent.data =
+                                      Uri.parse("https://twitter.com/_joelkanyi")
+                                  ContextCompat.startActivity(context, intent, null)
+                              }
+                          )
+                          DialogsItems(
+                              icon = Icons.Filled.Person,
+                              title = "Twitter",
+                              onClick = {
+                                  intent.data =
+                                      Uri.parse("https://twitter.com/_joelkanyi")
+                                  ContextCompat.startActivity(context, intent, null)
+                              }
+                          )
                       }
                     },
                     confirmButton = {
@@ -121,18 +149,9 @@ fun AccountScreen(
                                 showSocialsDialog.value = false
                             }
                         ) {
-                            Text("Confirm")
+                            Text("OK")
                         }
                     },
-                    dismissButton = {
-                        TextButton(
-                            onClick = {
-                                showSocialsDialog.value = false
-                            }
-                        ) {
-                            Text("Dismiss")
-                        }
-                    }
                 )
             }
         }
@@ -143,7 +162,7 @@ fun AccountScreen(
 @Composable
 fun AccountItems(
     accountItem: AccountItem,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -153,12 +172,33 @@ fun AccountItems(
         horizontalArrangement = Arrangement.Start
     ) {
         Icon(
-            imageVector = accountItem.icon,
-            contentDescription = accountItem.title,
-            modifier = Modifier.padding(end = 16.dp)
-        )
-//        Spacer(modifier = Modifier.width(16.dp))
+                imageVector = accountItem.icon,
+                contentDescription = accountItem.title,
+                modifier = Modifier.padding(end = 16.dp)
+            )
         Text(text = accountItem.title)
     }
     Divider()
+}
+
+@Composable
+fun DialogsItems(
+    onClick: () -> Unit,
+    icon: ImageVector,
+    title: String
+) {
+    Row(
+        modifier = Modifier
+            .clickable { onClick() }
+            .padding(top = 16.dp)
+            .fillMaxWidth()
+
+        ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.padding(end = 16.dp)
+        )
+        Text(text = title)
+    }
 }
