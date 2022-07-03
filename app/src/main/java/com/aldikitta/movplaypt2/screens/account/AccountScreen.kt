@@ -111,37 +111,37 @@ fun AccountScreen(
                         Text(text = "Stay Connected")
                     },
                     text = {
-                      Column {
-                          val intent = Intent(Intent.ACTION_VIEW)
-                          Divider()
-                          DialogsItems(
-                            icon = Icons.Filled.Person,
-                              title = "Linkedin",
-                              onClick = {
-                                  intent.data =
-                                      Uri.parse("https://twitter.com/_joelkanyi")
-                                  ContextCompat.startActivity(context, intent, null)
-                              }
-                          )
-                          DialogsItems(
-                              icon = Icons.Filled.Person,
-                              title = "Github",
-                              onClick = {
-                                  intent.data =
-                                      Uri.parse("https://twitter.com/_joelkanyi")
-                                  ContextCompat.startActivity(context, intent, null)
-                              }
-                          )
-                          DialogsItems(
-                              icon = Icons.Filled.Person,
-                              title = "Twitter",
-                              onClick = {
-                                  intent.data =
-                                      Uri.parse("https://twitter.com/_joelkanyi")
-                                  ContextCompat.startActivity(context, intent, null)
-                              }
-                          )
-                      }
+                        Column {
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            Divider()
+                            DialogsItems(
+                                icon = Icons.Filled.Person,
+                                title = "Linkedin",
+                                onClick = {
+                                    intent.data =
+                                        Uri.parse("https://twitter.com/_joelkanyi")
+                                    ContextCompat.startActivity(context, intent, null)
+                                }
+                            )
+                            DialogsItems(
+                                icon = Icons.Filled.Person,
+                                title = "Github",
+                                onClick = {
+                                    intent.data =
+                                        Uri.parse("https://twitter.com/_joelkanyi")
+                                    ContextCompat.startActivity(context, intent, null)
+                                }
+                            )
+                            DialogsItems(
+                                icon = Icons.Filled.Person,
+                                title = "Twitter",
+                                onClick = {
+                                    intent.data =
+                                        Uri.parse("https://twitter.com/_joelkanyi")
+                                    ContextCompat.startActivity(context, intent, null)
+                                }
+                            )
+                        }
                     },
                     confirmButton = {
                         TextButton(
@@ -172,10 +172,10 @@ fun AccountItems(
         horizontalArrangement = Arrangement.Start
     ) {
         Icon(
-                imageVector = accountItem.icon,
-                contentDescription = accountItem.title,
-                modifier = Modifier.padding(end = 16.dp)
-            )
+            imageVector = accountItem.icon,
+            contentDescription = accountItem.title,
+            modifier = Modifier.padding(end = 16.dp)
+        )
         Text(text = accountItem.title)
     }
     Divider()
@@ -193,7 +193,7 @@ fun DialogsItems(
             .padding(top = 16.dp)
             .fillMaxWidth()
 
-        ) {
+    ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
