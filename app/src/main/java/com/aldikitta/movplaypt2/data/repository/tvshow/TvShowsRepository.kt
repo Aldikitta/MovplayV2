@@ -46,7 +46,7 @@ class TvShowsRepository @Inject constructor(private val tvShowApi: TvShowTMDBApi
         ).flow
     }
 
-    fun getTrendingTvShows(): Flow<PagingData<TvShow>> {
+    fun getTrendingThisWeekTvShows(): Flow<PagingData<TvShow>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = false, pageSize = 27),
             pagingSourceFactory = {

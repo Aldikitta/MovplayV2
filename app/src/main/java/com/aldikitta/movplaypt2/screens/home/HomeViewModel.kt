@@ -181,4 +181,92 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * Tv Shows code block
+     */
+
+    fun getTrendingTvShows(genreId: Int?) {
+        viewModelScope.launch {
+            _trendingTvShows.value = if (genreId != null) {
+                tvShowsRepository.getTrendingThisWeekTvShows().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                tvShowsRepository.getTrendingThisWeekTvShows().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getTopRatedTvShows(genreId: Int?) {
+        viewModelScope.launch {
+            _topRatedTvShows.value = if (genreId != null) {
+                tvShowsRepository.getTopRatedTvShows().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                tvShowsRepository.getTopRatedTvShows().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getOnTheAirTvShows(genreId: Int?) {
+        viewModelScope.launch {
+            _onAirTvShows.value = if (genreId != null) {
+                tvShowsRepository.getOnTheAirTvShows().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                tvShowsRepository.getOnTheAirTvShows().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getAiringTodayTvShows(genreId: Int?) {
+        viewModelScope.launch {
+            _airingTvShows.value = if (genreId != null) {
+                tvShowsRepository.getAiringTodayTvShows().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                tvShowsRepository.getAiringTodayTvShows().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getPopularTvShows(genreId: Int?) {
+        viewModelScope.launch {
+            _popularTvShows.value = if (genreId != null) {
+                tvShowsRepository.getPopularTvShows().map { pagingData ->
+                    pagingData.filter {
+                        it.genreIds.contains(genreId)
+                    }
+                }.cachedIn(viewModelScope)
+            } else {
+                tvShowsRepository.getPopularTvShows().cachedIn(viewModelScope)
+            }
+        }
+    }
+
+    fun getTvShowsGenres() {
+        viewModelScope.launch {
+            when (val result = tvShowsGenresRepository.getTvShowsGenres()) {
+                is Resource.Success -> {
+                    _tvShowsGenres.value = result.data?.genres!!
+                }
+                is Resource.Error -> {
+                    //loadingError.value = result.message.toString()
+                }
+                else -> {}
+            }
+        }
+    }
 }
