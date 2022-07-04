@@ -14,9 +14,17 @@ fun HomeScreen(
     navigator: DestinationsNavigator,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    //Movies
     val trendingMovies = viewModel.trendingMovies.value.collectAsLazyPagingItems()
     val upComingMovies = viewModel.upcomingMovies.value.collectAsLazyPagingItems()
     val topRatedMovies = viewModel.topRatedMovies.value.collectAsLazyPagingItems()
     val nowPlayingMovies = viewModel.nowPlayingMovies.value.collectAsLazyPagingItems()
     val popularMovies = viewModel.popularMovies.value.collectAsLazyPagingItems()
+
+    //Tv Shows
+    val trendingTvShows = viewModel.trendingTvShows.value.collectAsLazyPagingItems()
+    val onAirTvShows = viewModel.onAirTvShows.value.collectAsLazyPagingItems()
+    val topRatedTvShows = viewModel.topRatedTvShows.value.collectAsLazyPagingItems()
+    val airingTodayTvShows = viewModel.airingTvShows.value.collectAsLazyPagingItems()
+    val popularTvShows = viewModel.popularTvShows.value.collectAsLazyPagingItems()
 }
