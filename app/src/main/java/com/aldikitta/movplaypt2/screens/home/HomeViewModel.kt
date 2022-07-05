@@ -86,13 +86,21 @@ class HomeViewModel @Inject constructor(
     val tvShowsGenres: State<List<Genre>> = _tvShowsGenres
 
     init {
-        //movies
+        //Movies
         getTrendingMovies(genreId = null)
         getNowPlayingMovies(genreId = null)
         getUpComingMovies(genreId = null)
         getTopRatedMovies(genreId = null)
         getPopularMovies(genreId = null)
         getMoviesGenres()
+
+        //Tv Shows
+        getTrendingTvShows(genreId = null)
+        getOnTheAirTvShows(genreId = null)
+        getAiringTodayTvShows(genreId = null)
+        getTopRatedTvShows(genreId = null)
+        getPopularTvShows(genreId = null)
+        getTvShowsGenres()
     }
 
     /**
