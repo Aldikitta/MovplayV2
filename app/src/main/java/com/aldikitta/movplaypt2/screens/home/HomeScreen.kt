@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -24,8 +25,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.aldikitta.movplaypt2.R
+import com.aldikitta.movplaypt2.screens.commons.MovieItem
 import com.aldikitta.movplaypt2.screens.commons.MovplayToolbar
+import com.aldikitta.movplaypt2.util.Constants.IMAGE_BASE_URL
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -97,6 +101,41 @@ fun HomeScreen(
             }
             item {
                 GenreOptionV2(viewModel = viewModel)
+            }
+
+            item(
+                content = {
+                    Text(
+                        text = "Trending today",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            )
+            item {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(220.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LazyRow(content = {
+                        if (viewModel.selectedOption.value == "Tv Shows") {
+                            items(trendingTvShows) { tvShow ->
+                                MovieItem(
+                                    imageUrl = "$IMAGE_BASE_URL/${tvShow?.posterPath}",
+                                    modifier = Modifier
+                                        .height(220.dp)
+                                        .width(250.dp)
+                                        .clickable {
+//                                            navigator.navigate()
+                                        }
+                                )
+                            }
+                        }
+                    })
+                }
             }
         }
     }
