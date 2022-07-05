@@ -3,15 +3,25 @@ package com.aldikitta.movplaypt2.screens.home
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -70,7 +80,11 @@ fun HomeScreen(
 
         LazyColumn {
             item {
-
+                Category(
+                    items = listOf("Movies", "Tv Shows"),
+                    viewModel = viewModel,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }
@@ -82,16 +96,59 @@ fun Category(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel
 ) {
+    val currentOption = MaterialTheme.colorScheme.primary
+    val option = MaterialTheme.colorScheme.primaryContainer
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center
     ) {
         items.forEach { item ->
-            val lineHeight = animateFloatAsState(
+            val lineLength = animateFloatAsState(
                 targetValue = if (item == viewModel.selectedOption.value) 2f else 0f,
                 animationSpec = tween(
                     durationMillis = 200
                 )
+            )
+
+            Text(
+                text = item,
+                color = if (item == viewModel.selectedOption.value) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline,
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .drawBehind {
+                        if (item == viewModel.selectedOption.value) {
+                            if (lineLength.value > 0f) {
+                                drawLine(
+                                    color = if (item == viewModel.selectedOption.value) {
+                                        currentOption
+                                    } else {
+                                        Color.Magenta
+                                    },
+                                    start = Offset(
+                                        size.width / 2f - lineLength.value * 10.dp.toPx(),
+                                        size.height
+                                    ),
+                                    end = Offset(
+                                        size.width / 2f + lineLength.value * 10.dp.toPx(),
+                                        size.height
+                                    ),
+                                    strokeWidth = 5.dp.toPx(),
+                                    cap = StrokeCap.Round
+                                )
+                            }
+                        }
+                    }
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember {
+                            MutableInteractionSource()
+                        }
+                    ) {
+                        viewModel.setSelectedOption(item)
+                    }
             )
         }
     }
