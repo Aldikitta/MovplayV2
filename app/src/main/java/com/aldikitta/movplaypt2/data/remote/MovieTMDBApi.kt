@@ -26,7 +26,7 @@ interface MovieTMDBApi {
         @Query("language") language: String = LANGUAGE_EN
     ): MovieResponse
 
-    @GET("trending/popular")
+    @GET("movie/popular")
     suspend fun getPopularMovies(
         @Query("page") page: Int = STARTING_PAGE_INDEX,
         @Query("api_key") apiKey: String = API_KEY,

@@ -1,5 +1,6 @@
 package com.aldikitta.movplaypt2.screens.home
 
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -16,14 +17,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.aldikitta.movplaypt2.R
@@ -33,6 +37,8 @@ import com.aldikitta.movplaypt2.util.Constants.IMAGE_BASE_URL
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import retrofit2.HttpException
+import java.io.IOException
 
 @RootNavGraph(start = true)
 @Destination
@@ -98,44 +104,269 @@ fun HomeScreen(
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Medium
                 )
-            }
-            item {
                 GenreOptionV2(viewModel = viewModel)
-            }
 
-            item(
-                content = {
-                    Text(
-                        text = "Trending today",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            )
+            }
             item {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Trending today",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .height(220.dp),
+                        .height(270.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     LazyRow(content = {
                         if (viewModel.selectedOption.value == "Tv Shows") {
                             items(trendingTvShows) { tvShow ->
                                 MovieItem(
-                                    imageUrl = "$IMAGE_BASE_URL/${tvShow?.posterPath}",
                                     modifier = Modifier
-                                        .height(220.dp)
-                                        .width(250.dp)
                                         .clickable {
 //                                            navigator.navigate()
-                                        }
+                                        },
+                                    imageUrl = "$IMAGE_BASE_URL/${tvShow?.posterPath}",
+
+                                    )
+                            }
+                        } else {
+                            items(trendingMovies) { movie ->
+                                MovieItem(
+                                    modifier = Modifier
+                                        .clickable {
+//                                            navigator.navigate()
+                                        },
+                                    imageUrl = "$IMAGE_BASE_URL/${movie?.posterPath}",
+                                )
+                            }
+
+                        }
+                        if (trendingMovies.loadState.append == LoadState.Loading) {
+                            item {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentWidth(Alignment.CenterHorizontally)
                                 )
                             }
                         }
-                    })
+                    }
+                    )
+                    trendingMovies.apply {
+                        loadState
+                        when (loadState.refresh) {
+                            is LoadState.Loading -> {
+                                CircularProgressIndicator(
+                                    modifier = Modifier,
+                                    strokeWidth = 2.dp
+                                )
+                            }
+                            is LoadState.Error -> {
+                                val e = trendingMovies.loadState.refresh as LoadState.Error
+                                Text(
+                                    text = when (e.error) {
+                                        is HttpException -> {
+                                            "Oops, something went wrong!"
+                                        }
+                                        is IOException -> {
+                                            "Couldn't reach server, check your internet connection!"
+                                        }
+                                        else -> {
+                                            "Unknown error occurred"
+                                        }
+                                    },
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                            else -> {
+
+                            }
+                        }
+                    }
                 }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            item {
+                Text(
+                    text = "Popular",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(210.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LazyRow {
+                        if (viewModel.selectedOption.value == "Tv Shows") {
+                            items(popularTvShows) { film ->
+
+                                MovieItem(
+                                    modifier = Modifier
+                                        .height(200.dp)
+                                        .width(130.dp)
+                                        .clickable {
+//                                            navigator.navigate(TvSeriesDetailsScreenDestination(film?.id!!))
+                                        },
+                                    imageUrl = "$IMAGE_BASE_URL/${film?.posterPath}"
+                                )
+                            }
+                        } else {
+                            items(popularMovies) { film ->
+
+                                MovieItem(
+                                    modifier = Modifier
+                                        .height(200.dp)
+                                        .width(130.dp)
+                                        .clickable {
+//                                            navigator.navigate(MovieDetailsScreenDestination(film?.id!!))
+                                        },
+                                    imageUrl = "$IMAGE_BASE_URL/${film?.posterPath}"
+                                )
+                            }
+                        }
+
+                        if (popularMovies.loadState.append == LoadState.Loading) {
+                            item {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentWidth(Alignment.CenterHorizontally)
+                                )
+                            }
+                        }
+                    }
+
+                    popularMovies.apply {
+                        loadState
+                        when (loadState.refresh) {
+                            is LoadState.Loading -> {
+                                CircularProgressIndicator(
+                                    modifier = Modifier,
+                                    strokeWidth = 2.dp
+                                )
+                            }
+                            is LoadState.Error -> {
+                                val e = popularMovies.loadState.refresh as LoadState.Error
+                                Text(
+                                    text = when (e.error) {
+                                        is HttpException -> {
+                                            "Oops, something went wrong!"
+                                        }
+                                        is IOException -> {
+                                            "Couldn't reach server, check your internet connection!"
+                                        }
+                                        else -> {
+                                            "Unknown error occurred"
+                                        }
+                                    },
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            item {
+                Text(
+                    text = if (viewModel.selectedOption.value == "Tv Shows") {
+                        "On Air"
+                    } else {
+                        "Upcoming"
+                    },
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(210.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LazyRow {
+                        if (viewModel.selectedOption.value == "Tv Shows") {
+                            items(onAirTvShows) { film ->
+                                MovieItem(
+                                    modifier = Modifier
+                                        .height(200.dp)
+                                        .width(130.dp)
+                                        .clickable {
+//                                            navigator.navigate(TvSeriesDetailsScreenDestination(film?.id!!))
+                                        },
+                                    imageUrl = "$IMAGE_BASE_URL/${film?.posterPath}"
+                                )
+                            }
+                        } else {
+                            items(upComingMovies) { film ->
+
+                                MovieItem(
+                                    modifier = Modifier
+                                        .height(200.dp)
+                                        .width(130.dp)
+                                        .clickable {
+//                                            navigator.navigate(MovieDetailsScreenDestination(film?.id!!))
+                                        },
+                                    imageUrl = "$IMAGE_BASE_URL/${film?.posterPath}"
+                                )
+                            }
+                        }
+
+                        if (upComingMovies.loadState.append == LoadState.Loading) {
+                            item {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentWidth(Alignment.CenterHorizontally)
+                                )
+                            }
+                        }
+                    }
+
+                    upComingMovies.apply {
+                        loadState
+                        when (loadState.refresh) {
+                            is LoadState.Loading -> {
+                                CircularProgressIndicator(
+                                    modifier = Modifier,
+                                    strokeWidth = 2.dp
+                                )
+                            }
+                            is LoadState.Error -> {
+                                val e = upComingMovies.loadState.refresh as LoadState.Error
+                                Text(
+                                    text = when (e.error) {
+                                        is HttpException -> {
+                                            "Oops, something went wrong!"
+                                        }
+                                        is IOException -> {
+                                            "Couldn't reach server, check your internet connection!"
+                                        }
+                                        else -> {
+                                            "Unknown error occurred"
+                                        }
+                                    },
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
