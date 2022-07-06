@@ -1,4 +1,4 @@
-package com.aldikitta.movplaypt2.screens.home.details
+package com.aldikitta.movplaypt2.screens.home.filmdetails
 
 import androidx.lifecycle.ViewModel
 import com.aldikitta.movplaypt2.data.remote.responses.CreditResponse
@@ -12,7 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(
+class FilmDetailsViewModel @Inject constructor(
     private val movieDetailsRepository: MovieDetailsRepository,
     private val tvShowDetailsRepository: TvShowDetailsRepository
 ) : ViewModel() {

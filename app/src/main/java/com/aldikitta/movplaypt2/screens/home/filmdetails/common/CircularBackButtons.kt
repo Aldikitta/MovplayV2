@@ -1,4 +1,4 @@
-package com.aldikitta.movplaypt2.screens.home.details.common
+package com.aldikitta.movplaypt2.screens.home.filmdetails.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
