@@ -31,6 +31,7 @@ import androidx.paging.compose.items
 import com.aldikitta.movplaypt2.R
 import com.aldikitta.movplaypt2.screens.commons.MovieItem
 import com.aldikitta.movplaypt2.screens.commons.MovplayToolbar
+import com.aldikitta.movplaypt2.screens.destinations.MovieDetailsScreenDestination
 import com.aldikitta.movplaypt2.util.Constants.IMAGE_BASE_URL
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -136,7 +137,7 @@ fun HomeScreen(
                                 MovieItem(
                                     modifier = Modifier
                                         .clickable {
-//                                            navigator.navigate()
+                                            navigator.navigate(MovieDetailsScreenDestination(movie?.id!!))
                                         },
                                     imageUrl = "$IMAGE_BASE_URL/${movie?.posterPath}",
                                 )
@@ -224,7 +225,7 @@ fun HomeScreen(
                                         .height(200.dp)
                                         .width(130.dp)
                                         .clickable {
-//                                            navigator.navigate(MovieDetailsScreenDestination(film?.id!!))
+                                            navigator.navigate(MovieDetailsScreenDestination(film?.id!!))
                                         },
                                     imageUrl = "$IMAGE_BASE_URL/${film?.posterPath}"
                                 )
@@ -314,7 +315,7 @@ fun HomeScreen(
                                         .height(200.dp)
                                         .width(130.dp)
                                         .clickable {
-//                                            navigator.navigate(MovieDetailsScreenDestination(film?.id!!))
+                                            navigator.navigate(MovieDetailsScreenDestination(film?.id!!))
                                         },
                                     imageUrl = "$IMAGE_BASE_URL/${film?.posterPath}"
                                 )
@@ -404,7 +405,7 @@ fun HomeScreen(
                                         .height(200.dp)
                                         .width(130.dp)
                                         .clickable {
-//                                            navigator.navigate(MovieDetailsScreenDestination(film?.id!!))
+                                            navigator.navigate(MovieDetailsScreenDestination(movie?.id!!))
                                         },
                                     imageUrl = "$IMAGE_BASE_URL/${movie?.posterPath}"
                                 )
@@ -490,7 +491,7 @@ fun HomeScreen(
                                         .height(200.dp)
                                         .width(130.dp)
                                         .clickable {
-//                                            navigator.navigate(MovieDetailsScreenDestination(film?.id!!))
+                                            navigator.navigate(MovieDetailsScreenDestination(movie?.id!!))
                                         },
                                     imageUrl = "$IMAGE_BASE_URL/${movie?.posterPath}"
                                 )
@@ -571,7 +572,6 @@ fun Category(
                 text = item,
                 color = if (item == viewModel.selectedOption.value) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline,
                 style = MaterialTheme.typography.headlineMedium,
-//                fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(8.dp)
                     .drawBehind {

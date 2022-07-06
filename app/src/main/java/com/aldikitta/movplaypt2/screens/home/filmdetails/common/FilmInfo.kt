@@ -55,8 +55,8 @@ fun FilmInfo(
             }
         }
         item {
-            if (casts is Resource.Success){
-
+            if (casts is Resource.Success) {
+                CastDetails(creditsResponse = casts.data!!, navigator = navigator)
             }
         }
     }

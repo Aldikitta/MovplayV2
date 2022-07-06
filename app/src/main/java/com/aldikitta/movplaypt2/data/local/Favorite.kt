@@ -10,7 +10,7 @@ data class Favorite(
     @PrimaryKey
     val mediaId: Int,
     val mediaType: String,
-    val image: Int,
+    val image: String,
     val title: String,
     val releaseDate: String,
     val rating: Float
