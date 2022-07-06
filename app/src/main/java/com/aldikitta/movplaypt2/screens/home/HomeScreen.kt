@@ -368,6 +368,182 @@ fun HomeScreen(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
+            item {
+                Text(
+                    text = if (viewModel.selectedOption.value == "Tv Shows") {
+                        "Airing Today"
+                    } else {
+                        "Now Playing"
+                    },
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(210.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LazyRow {
+                        if (viewModel.selectedOption.value == "Tv Shows") {
+                            items(airingTodayTvShows) { tvShow ->
+                                MovieItem(
+                                    modifier = Modifier
+                                        .height(200.dp)
+                                        .width(130.dp)
+                                        .clickable {
+//                                            navigator.navigate(TvSeriesDetailsScreenDestination(film?.id!!))
+                                        },
+                                    imageUrl = "$IMAGE_BASE_URL/${tvShow?.posterPath}"
+                                )
+                            }
+                        } else {
+                            items(nowPlayingMovies) { movie ->
+
+                                MovieItem(
+                                    modifier = Modifier
+                                        .height(200.dp)
+                                        .width(130.dp)
+                                        .clickable {
+//                                            navigator.navigate(MovieDetailsScreenDestination(film?.id!!))
+                                        },
+                                    imageUrl = "$IMAGE_BASE_URL/${movie?.posterPath}"
+                                )
+                            }
+                        }
+
+                        if (nowPlayingMovies.loadState.append == LoadState.Loading) {
+                            item {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentWidth(Alignment.CenterHorizontally)
+                                )
+                            }
+                        }
+                    }
+
+                    nowPlayingMovies.apply {
+                        loadState
+                        when (loadState.refresh) {
+                            is LoadState.Loading -> {
+                                CircularProgressIndicator(
+                                    modifier = Modifier,
+                                    strokeWidth = 2.dp
+                                )
+                            }
+                            is LoadState.Error -> {
+                                val e = nowPlayingMovies.loadState.refresh as LoadState.Error
+                                Text(
+                                    text = when (e.error) {
+                                        is HttpException -> {
+                                            "Oops, something went wrong!"
+                                        }
+                                        is IOException -> {
+                                            "Couldn't reach server, check your internet connection!"
+                                        }
+                                        else -> {
+                                            "Unknown error occurred"
+                                        }
+                                    },
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            item {
+                Text(
+                    text = "Top Rated",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(210.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LazyRow {
+                        if (viewModel.selectedOption.value == "Tv Shows") {
+                            items(topRatedTvShows) { tvShow ->
+                                MovieItem(
+                                    modifier = Modifier
+                                        .height(200.dp)
+                                        .width(130.dp)
+                                        .clickable {
+//                                            navigator.navigate(TvSeriesDetailsScreenDestination(film?.id!!))
+                                        },
+                                    imageUrl = "$IMAGE_BASE_URL/${tvShow?.posterPath}"
+                                )
+                            }
+                        } else {
+                            items(topRatedMovies) { movie ->
+
+                                MovieItem(
+                                    modifier = Modifier
+                                        .height(200.dp)
+                                        .width(130.dp)
+                                        .clickable {
+//                                            navigator.navigate(MovieDetailsScreenDestination(film?.id!!))
+                                        },
+                                    imageUrl = "$IMAGE_BASE_URL/${movie?.posterPath}"
+                                )
+                            }
+                        }
+
+                        if (topRatedMovies.loadState.append == LoadState.Loading) {
+                            item {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentWidth(Alignment.CenterHorizontally)
+                                )
+                            }
+                        }
+                    }
+
+                    topRatedMovies.apply {
+                        loadState
+                        when (loadState.refresh) {
+                            is LoadState.Loading -> {
+                                CircularProgressIndicator(
+                                    modifier = Modifier,
+                                    strokeWidth = 2.dp
+                                )
+                            }
+                            is LoadState.Error -> {
+                                val e = topRatedMovies.loadState.refresh as LoadState.Error
+                                Text(
+                                    text = when (e.error) {
+                                        is HttpException -> {
+                                            "Oops, something went wrong!"
+                                        }
+                                        is IOException -> {
+                                            "Couldn't reach server, check your internet connection!"
+                                        }
+                                        else -> {
+                                            "Unknown error occurred"
+                                        }
+                                    },
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
 }

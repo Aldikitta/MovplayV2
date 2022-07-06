@@ -24,7 +24,7 @@ fun MovieItem(modifier: Modifier = Modifier, imageUrl: String) {
             painter = rememberAsyncImagePainter(
                 ImageRequest.Builder(LocalContext.current).data(data = imageUrl)
                     .apply(block = fun ImageRequest.Builder.() {
-                        placeholder(R.mipmap.ic_launcher)
+                        placeholder(R.mipmap.ic_launcher_round)
                         crossfade(false)
                     }).build()
             ),
