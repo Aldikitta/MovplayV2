@@ -107,58 +107,6 @@ fun FilmImageBanner(
             }
         }
     )
-
-
-
-//    TopAppBar(
-//        contentPadding = PaddingValues(),
-//        modifier = Modifier
-//            .height(
-//                AppBarExpendedHeight
-//            )
-//            .offset { IntOffset(x = 0, y = -offset) },
-//        elevation = if (offset == maxOffset) 4.dp else 0.dp
-//    ) {
-//        Column {
-//            Box {
-//                Image(
-//                    painter = rememberImagePainter(
-//                        data = posterUrl,
-//                        builder = {
-//                            placeholder(R.drawable.placeholder)
-//                            crossfade(true)
-//                        }
-//                    ),
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .height(imageHeight)
-//                        .graphicsLayer {
-//                            alpha = 1f - offsetProgress
-//                        },
-//                    contentScale = ContentScale.Crop,
-//                    contentDescription = "Movie Banner"
-//                )
-//
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .background(
-//                            Brush.verticalGradient(
-//                                colorStops = arrayOf(
-//                                    Pair(0.3f, Transparent),
-//                                    Pair(1.5f, Color.Black)
-//                                )
-//                            )
-//                        )
-//                )
-////                FilmNameAndRating(
-////                    filmName = filmName,
-////                    rating = rating
-////                )
-//            }
-//        }
-//    }
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
