@@ -32,6 +32,7 @@ import com.aldikitta.movplaypt2.R
 import com.aldikitta.movplaypt2.screens.commons.MovieItem
 import com.aldikitta.movplaypt2.screens.commons.MovplayToolbar
 import com.aldikitta.movplaypt2.screens.destinations.MovieDetailsScreenDestination
+import com.aldikitta.movplaypt2.screens.destinations.TvShowDetailsScreenDestination
 import com.aldikitta.movplaypt2.util.Constants.IMAGE_BASE_URL
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -126,7 +127,7 @@ fun HomeScreen(
                                 MovieItem(
                                     modifier = Modifier
                                         .clickable {
-//                                            navigator.navigate()
+                                            navigator.navigate(TvShowDetailsScreenDestination(tvShow?.id!!))
                                         },
                                     imageUrl = "$IMAGE_BASE_URL/${tvShow?.posterPath}",
 
@@ -212,7 +213,7 @@ fun HomeScreen(
                                         .height(200.dp)
                                         .width(130.dp)
                                         .clickable {
-//                                            navigator.navigate(TvSeriesDetailsScreenDestination(film?.id!!))
+                                            navigator.navigate(TvShowDetailsScreenDestination(film?.id!!))
                                         },
                                     imageUrl = "$IMAGE_BASE_URL/${film?.posterPath}"
                                 )
@@ -302,7 +303,7 @@ fun HomeScreen(
                                         .height(200.dp)
                                         .width(130.dp)
                                         .clickable {
-//                                            navigator.navigate(TvSeriesDetailsScreenDestination(film?.id!!))
+                                            navigator.navigate(TvShowDetailsScreenDestination(film?.id!!))
                                         },
                                     imageUrl = "$IMAGE_BASE_URL/${film?.posterPath}"
                                 )
@@ -392,7 +393,7 @@ fun HomeScreen(
                                         .height(200.dp)
                                         .width(130.dp)
                                         .clickable {
-//                                            navigator.navigate(TvSeriesDetailsScreenDestination(film?.id!!))
+                                            navigator.navigate(TvShowDetailsScreenDestination(tvShow?.id!!))
                                         },
                                     imageUrl = "$IMAGE_BASE_URL/${tvShow?.posterPath}"
                                 )
@@ -478,7 +479,7 @@ fun HomeScreen(
                                         .height(200.dp)
                                         .width(130.dp)
                                         .clickable {
-//                                            navigator.navigate(TvSeriesDetailsScreenDestination(film?.id!!))
+                                            navigator.navigate(TvShowDetailsScreenDestination(tvShow?.id!!))
                                         },
                                     imageUrl = "$IMAGE_BASE_URL/${tvShow?.posterPath}"
                                 )
