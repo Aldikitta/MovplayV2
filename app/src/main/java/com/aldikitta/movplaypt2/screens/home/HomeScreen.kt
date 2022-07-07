@@ -32,6 +32,7 @@ import com.aldikitta.movplaypt2.R
 import com.aldikitta.movplaypt2.screens.commons.MovieItem
 import com.aldikitta.movplaypt2.screens.commons.MovplayToolbar
 import com.aldikitta.movplaypt2.screens.destinations.MovieDetailsScreenDestination
+import com.aldikitta.movplaypt2.screens.destinations.SearchScreenDestination
 import com.aldikitta.movplaypt2.screens.destinations.TvShowDetailsScreenDestination
 import com.aldikitta.movplaypt2.util.Constants.IMAGE_BASE_URL
 import com.ramcosta.composedestinations.annotation.Destination
@@ -79,7 +80,7 @@ fun HomeScreen(
             navActions = {
                 IconButton(
                     onClick = {
-//                        navigator.navigate(SearchScreenDestination)
+                        navigator.navigate(SearchScreenDestination)
                     },
                 ) {
                     Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")
