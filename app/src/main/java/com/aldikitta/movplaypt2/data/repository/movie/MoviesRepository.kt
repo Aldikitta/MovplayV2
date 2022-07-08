@@ -5,59 +5,49 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.aldikitta.movplaypt2.data.paging.movie.*
 import com.aldikitta.movplaypt2.data.remote.MovieTMDBApi
+import com.aldikitta.movplaypt2.data.remote.responses.movieresponses.MovieResponse
 import com.aldikitta.movplaypt2.model.movie.Movie
+import com.aldikitta.movplaypt2.util.Resource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import timber.log.Timber
+import java.lang.Exception
 import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(private val movieApi: MovieTMDBApi) {
-    fun getTrendingMoviesThisWeek(): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(enablePlaceholders = false, pageSize = 27),
-            pagingSourceFactory = {
-                TrendingMoviesSource(movieApi)
-            }
-        ).flow
-    }
+    fun getTrendingMoviesThisWeek() = Pager(
+        config = PagingConfig(enablePlaceholders = false, pageSize = 1),
+        pagingSourceFactory = {
+            TrendingMoviesSource(movieApi)
+        }
+    ).flow
 
-    fun getUpcomingMovies(): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(enablePlaceholders = false, pageSize = 27),
-            pagingSourceFactory = {
-                UpcomingMoviesSource(movieApi)
-            }
-        ).flow
-    }
+    fun getUpcomingMovies() = Pager(
+        config = PagingConfig(enablePlaceholders = false, pageSize = 1),
+        pagingSourceFactory = {
+            UpcomingMoviesSource(movieApi)
+        }
+    ).flow
 
-    fun getTopRatedMovies(): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(enablePlaceholders = false, pageSize = 27),
-            pagingSourceFactory = {
-                TopRatedMoviesSource(movieApi)
-            }
-        ).flow
-    }
+
+    fun getTopRatedMovies() = Pager(
+        config = PagingConfig(enablePlaceholders = false, pageSize = 1),
+        pagingSourceFactory = {
+            TopRatedMoviesSource(movieApi)
+        }
+    ).flow
 
     fun getNowPlayingMovies() = Pager(
         pagingSourceFactory = {
             NowPlayingMoviesSource(movieApi)
         },
-        config = PagingConfig(pageSize = 1)
+        config = PagingConfig(pageSize = 1, enablePlaceholders = false)
     ).flow
-//    fun getNowPlayingMovies(): Flow<PagingData<Movie>> {
-//        return Pager(
-//            config = PagingConfig(enablePlaceholders = false, pageSize = 27),
-//            pagingSourceFactory = {
-//                NowPlayingMoviesSource(movieApi)
-//            }
-//        ).flow
-//    }
 
-    fun getPopularMovies(): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(enablePlaceholders = false, pageSize = 27),
-            pagingSourceFactory = {
-                PopularMoviesSource(movieApi)
-            }
-        ).flow
-    }
+    fun getPopularMovies() = Pager(
+        config = PagingConfig(enablePlaceholders = false, pageSize = 1),
+        pagingSourceFactory = {
+            PopularMoviesSource(movieApi)
+        }
+    ).flow
 }

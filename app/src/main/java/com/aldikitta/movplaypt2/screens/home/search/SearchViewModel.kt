@@ -10,9 +10,7 @@ import androidx.paging.filter
 import com.aldikitta.movplaypt2.data.repository.MultiSearchRepository
 import com.aldikitta.movplaypt2.model.Search
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +28,6 @@ class SearchViewModel @Inject constructor(
 
     private val _searchResult = mutableStateOf<Flow<PagingData<Search>>>(emptyFlow())
     val searchSearch: State<Flow<PagingData<Search>>> = _searchResult
-
     fun searchAll(searchParam: String) {
         viewModelScope.launch {
             _searchResult.value = repository.multiSearch(searchParam).map { pagingData ->

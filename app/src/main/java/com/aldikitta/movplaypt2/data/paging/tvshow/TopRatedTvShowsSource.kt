@@ -6,8 +6,9 @@ import com.aldikitta.movplaypt2.data.remote.TvShowTMDBApi
 import com.aldikitta.movplaypt2.model.tvshow.TvShow
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-class TopRatedTvShowsSource(private val api: TvShowTMDBApi) :
+class TopRatedTvShowsSource @Inject constructor(private val api: TvShowTMDBApi) :
     PagingSource<Int, TvShow>() {
     override fun getRefreshKey(state: PagingState<Int, TvShow>): Int? {
         return state.anchorPosition

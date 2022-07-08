@@ -10,48 +10,38 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TvShowsRepository @Inject constructor(private val tvShowApi: TvShowTMDBApi) {
-    fun getAiringTodayTvShows(): Flow<PagingData<TvShow>> {
-        return Pager(
+    fun getAiringTodayTvShows() = Pager(
             config = PagingConfig(enablePlaceholders = false, pageSize = 27),
             pagingSourceFactory = {
                 AiringTodayTvShowsSource(tvShowApi)
             }
         ).flow
-    }
 
-    fun getOnTheAirTvShows(): Flow<PagingData<TvShow>> {
-        return Pager(
+    fun getOnTheAirTvShows() = Pager(
             config = PagingConfig(enablePlaceholders = false, pageSize = 27),
             pagingSourceFactory = {
                 OnTheAirTvShowsSource(tvShowApi)
             }
         ).flow
-    }
 
-    fun getPopularTvShows(): Flow<PagingData<TvShow>> {
-        return Pager(
+    fun getPopularTvShows() = Pager(
             config = PagingConfig(enablePlaceholders = false, pageSize = 27),
             pagingSourceFactory = {
                 PopularTvShowsSource(tvShowApi)
             }
         ).flow
-    }
 
-    fun getTopRatedTvShows(): Flow<PagingData<TvShow>> {
-        return Pager(
+    fun getTopRatedTvShows() = Pager(
             config = PagingConfig(enablePlaceholders = false, pageSize = 27),
             pagingSourceFactory = {
                 TopRatedTvShowsSource(tvShowApi)
             }
         ).flow
-    }
 
-    fun getTrendingThisWeekTvShows(): Flow<PagingData<TvShow>> {
-        return Pager(
+    fun getTrendingThisWeekTvShows() = Pager(
             config = PagingConfig(enablePlaceholders = false, pageSize = 27),
             pagingSourceFactory = {
                 TrendingTvShowsSource(tvShowApi)
             }
         ).flow
-    }
 }

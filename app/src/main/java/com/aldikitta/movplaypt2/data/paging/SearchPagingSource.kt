@@ -6,8 +6,9 @@ import com.aldikitta.movplaypt2.data.remote.SearchTMDBApi
 import com.aldikitta.movplaypt2.model.Search
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-class SearchPagingSource(private val api: SearchTMDBApi, private val query: String) :
+class SearchPagingSource @Inject constructor(private val api: SearchTMDBApi, private val query: String) :
     PagingSource<Int, Search>() {
     override fun getRefreshKey(state: PagingState<Int, Search>): Int? {
         return state.anchorPosition

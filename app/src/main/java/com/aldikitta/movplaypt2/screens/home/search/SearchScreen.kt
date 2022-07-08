@@ -9,15 +9,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -55,7 +57,7 @@ fun SearchScreen(
     viewModel: SearchViewModel = hiltViewModel()
 ) {
     val searchResult = viewModel.searchSearch.value.collectAsLazyPagingItems()
-    val keyboardController = LocalSoftwareKeyboardController.current
+//    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         Modifier.fillMaxSize()
@@ -65,7 +67,6 @@ fun SearchScreen(
             title = {
                 Text(
                     text = "Search",
-                    color = Color.White,
                     fontWeight = FontWeight.SemiBold
                 )
             },
@@ -81,7 +82,7 @@ fun SearchScreen(
                 .padding(8.dp),
             onSearch = { searchParam ->
                 viewModel.searchAll(searchParam)
-                keyboardController?.hide()
+//                keyboardController?.hide()
             }
         )
 
@@ -130,11 +131,25 @@ fun SearchScreen(
             searchResult.apply {
                 when (loadState.refresh) {
                     is LoadState.Loading -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center),
-                            color = Color.Red,
-                            strokeWidth = 2.dp
-                        )
+                        if (searchResult.itemCount <= 0) {
+                            Column(
+                                Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(250.dp),
+                                    painter = painterResource(id = R.drawable.ic_empty_cuate),
+                                    contentDescription = null
+                                )
+                            }
+                        }
+//                        CircularProgressIndicator(
+//                            modifier = Modifier.align(Alignment.Center),
+//                            color = Color.Red,
+//                            strokeWidth = 2.dp
+//                        )
                     }
                     is LoadState.Error -> {
                         val e = searchResult.loadState.refresh as LoadState.Error
@@ -187,41 +202,48 @@ fun SearchBar(
     onSearch: (String) -> Unit = {}
 ) {
 
-    val searchTerm = viewModel.searchTerm.value
+    var searchTerm = viewModel.searchTerm.value
+    val focusRequester = FocusRequester()
 
     TextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .focusRequester(focusRequester),
         value = searchTerm,
         onValueChange = {
+            searchTerm = it
             viewModel.setSearchTerm(it)
+            viewModel.searchAll(it)
         },
         placeholder = {
             Text(
                 text = "Search...",
-                color = Color.Green
             )
         },
-        modifier = modifier
-            .fillMaxWidth()
-            .shadow(4.dp, CircleShape)
-            .background(Color.Transparent, CircleShape),
-        shape = MaterialTheme.shapes.medium,
-        keyboardOptions = KeyboardOptions(
-            capitalization = KeyboardCapitalization.Words,
-            autoCorrect = true,
-            keyboardType = KeyboardType.Text,
-        ),
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color.White,
-            disabledTextColor = Color.Transparent,
-            backgroundColor = Color.Blue,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent
-        ),
-        textStyle = TextStyle(color = Color.White),
+//        keyboardOptions = KeyboardOptions(
+//            capitalization = KeyboardCapitalization.Words,
+//            autoCorrect = true,
+//            keyboardType = KeyboardType.Text,
+//        ),
         maxLines = 1,
         singleLine = true,
         trailingIcon = {
+//            if (searchTerm.trim().isNotEmpty()) {
+//                IconButton(onClick = {
+//                    searchTerm = ""
+//
+//                }) {
+//                    Icon(Icons.Filled.Clear, contentDescription = "abort")
+//
+//                }
+//            } else {
+//                IconButton(onClick = {
+//                    onSearch(searchTerm)
+//                }) {
+//                    Icon(Icons.Filled.Search, contentDescription = "abort")
+//
+//                }
+//            }
             IconButton(onClick = { onSearch(searchTerm) }) {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -231,9 +253,13 @@ fun SearchBar(
             }
         },
     )
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchItem(
     search: Search?,
@@ -246,8 +272,6 @@ fun SearchItem(
             .clickable {
                 onClick()
             },
-        shape = RoundedCornerShape(8.dp),
-        elevation = 5.dp
     ) {
         Row {
             Image(

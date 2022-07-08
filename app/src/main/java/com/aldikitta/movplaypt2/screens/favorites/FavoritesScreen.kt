@@ -13,9 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -36,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.aldikitta.movplaypt2.R
 import com.aldikitta.movplaypt2.data.local.Favorite
@@ -66,14 +62,14 @@ fun FavoritesScreen(
         MovplayToolbar(
             navigator = navigator,
             title = {
-                Text(text = "Favorites")
+                androidx.compose.material3.Text(text = "Favorites")
             },
             showBackArrow = false,
             navActions = {
-                IconButton(onClick = {
+                androidx.compose.material3.IconButton(onClick = {
                     openDialog.value = true
                 }) {
-                    Icon(
+                    androidx.compose.material3.Icon(
                         imageVector = Icons.Filled.Delete,
                         contentDescription = null,
                         tint = Color.White
@@ -119,7 +115,7 @@ fun FavoritesScreen(
                                 .background(color)
                                 .padding(horizontal = Dp(20f))
                         ) {
-                            Icon(
+                            androidx.compose.material3.Icon(
                                 icon,
                                 contentDescription = "Delete Icon",
                                 modifier = Modifier.scale(scale)
@@ -170,7 +166,7 @@ fun FavoritesScreen(
         }
 
         if (openDialog.value) {
-            AlertDialog(
+            androidx.compose.material3.AlertDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
@@ -178,36 +174,32 @@ fun FavoritesScreen(
                     openDialog.value = false
                 },
                 title = {
-                    androidx.compose.material.Text(text = "Delete all favorites")
+                    androidx.compose.material3.Text(text = "Delete all favorites")
                 },
                 text = {
-                    androidx.compose.material.Text(text = "Are you want to delete all?")
+                    androidx.compose.material3.Text(text = "Are you want to delete all?")
                 },
                 confirmButton = {
-                    Button(
+                    androidx.compose.material3.Button(
                         onClick = {
                             viewModel.deleteAllFavorites()
                             openDialog.value = false
                         },
-                        colors = ButtonDefaults.buttonColors(Color.Red)
                     ) {
-                        androidx.compose.material.Text(text = "Yes", color = Color.White)
+                        androidx.compose.material3.Text(text = "Yes", color = Color.White)
                     }
                 },
                 dismissButton = {
-                    Button(
+                    androidx.compose.material3.Button(
                         onClick = {
                             openDialog.value = false
                         },
-                        colors = ButtonDefaults.buttonColors(Color.Red)
                     ) {
-                        androidx.compose.material.Text(text = "No", color = Color.White)
+                        androidx.compose.material3.Text(text = "No", color = Color.White)
                     }
                 },
-                backgroundColor = Color.White,
-                contentColor = Color.Black,
-                shape = RoundedCornerShape(10.dp)
-            )
+
+                )
         }
     }
 }
@@ -269,13 +261,13 @@ fun FilmDetails(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
-                androidx.compose.material.Text(
+                androidx.compose.material3.Text(
                     text = title,
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold
                 )
-                androidx.compose.material.Text(
+                androidx.compose.material3.Text(
                     text = releaseDate,
                     color = Color.White,
                     fontSize = 18.sp,
