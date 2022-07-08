@@ -9,10 +9,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -20,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -44,7 +46,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import timber.log.Timber
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Destination
 @Composable
 fun FavoritesScreen(
@@ -72,13 +74,12 @@ fun FavoritesScreen(
                     androidx.compose.material3.Icon(
                         imageVector = Icons.Filled.Delete,
                         contentDescription = null,
-                        tint = Color.White
                     )
                 }
             }
         )
 
-        LazyColumn {
+        LazyColumn(modifier = Modifier.padding(horizontal = 8.dp)) {
             items(
                 items = favoriteFilms.value,
                 key = { favoriteFilms: Favorite -> favoriteFilms.mediaId }) { favorite ->
@@ -100,8 +101,8 @@ fun FavoritesScreen(
                     background = {
                         val color by animateColorAsState(
                             when (dismissState.targetValue) {
-                                DismissValue.Default -> Color.Black
-                                else -> Color.Red
+                                DismissValue.Default -> MaterialTheme.colorScheme.surface
+                                else -> MaterialTheme.colorScheme.error
                             }
                         )
                         val alignment = Alignment.CenterEnd
@@ -112,21 +113,21 @@ fun FavoritesScreen(
                         Box(
                             Modifier
                                 .fillMaxSize()
+                                .clip(shape = MaterialTheme.shapes.medium)
                                 .background(color)
-                                .padding(horizontal = Dp(20f))
+                                .padding(horizontal = Dp(20f)),
+                            contentAlignment = alignment
                         ) {
                             androidx.compose.material3.Icon(
                                 icon,
                                 contentDescription = "Delete Icon",
-                                modifier = Modifier.scale(scale)
+                                modifier = Modifier.scale(scale),
+                                tint = MaterialTheme.colorScheme.onError
                             )
                         }
                     },
                     dismissContent = {
-                        Card(
-                            elevation = animateDpAsState(
-                                if (dismissState.dismissDirection != null) 4.dp else 0.dp
-                            ).value,
+                        androidx.compose.material3.Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(230.dp)
@@ -149,7 +150,7 @@ fun FavoritesScreen(
         }
         Timber.d(favoriteFilms.value.isEmpty().toString())
 
-        if ((favoriteFilms.value.isEmpty() || favoriteFilms.value.isNullOrEmpty())) {
+        if ((favoriteFilms.value.isEmpty())) {
             Timber.d("Empty")
             Column(
                 Modifier.fillMaxSize(),
@@ -180,22 +181,22 @@ fun FavoritesScreen(
                     androidx.compose.material3.Text(text = "Are you want to delete all?")
                 },
                 confirmButton = {
-                    androidx.compose.material3.Button(
+                    androidx.compose.material3.TextButton(
                         onClick = {
                             viewModel.deleteAllFavorites()
                             openDialog.value = false
                         },
                     ) {
-                        androidx.compose.material3.Text(text = "Yes", color = Color.White)
+                        androidx.compose.material3.Text("Yes")
                     }
                 },
                 dismissButton = {
-                    androidx.compose.material3.Button(
+                    androidx.compose.material3.TextButton(
                         onClick = {
                             openDialog.value = false
                         },
                     ) {
-                        androidx.compose.material3.Text(text = "No", color = Color.White)
+                        androidx.compose.material3.Text("No")
                     }
                 },
 
@@ -263,16 +264,15 @@ fun FilmDetails(
             Column {
                 androidx.compose.material3.Text(
                     text = title,
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleLarge,
                     color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
+                    )
                 androidx.compose.material3.Text(
                     text = releaseDate,
                     color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Light
-                )
+                    style = MaterialTheme.typography.titleMedium,
+                    )
             }
             VoteAverageRatingIndicator(
                 percentage = rating

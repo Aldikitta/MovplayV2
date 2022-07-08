@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,7 +26,6 @@ fun VoteAverageRatingIndicator(
     number: Int = 10,
     fontSize: TextUnit = 16.sp,
     radius: Dp = 20.dp,
-//    color: Color = primaryPink,
     strokeWidth: Dp = 3.dp,
     animationDuration: Int = 1000,
     animDelay: Int = 0
@@ -41,7 +41,7 @@ fun VoteAverageRatingIndicator(
             delayMillis = animDelay
         )
     )
-
+    val primary = MaterialTheme.colorScheme.error
     LaunchedEffect(key1 = true) {
         animationPlayed = true
     }
@@ -55,7 +55,7 @@ fun VoteAverageRatingIndicator(
                 .size(radius * 2f)
         ) {
             drawArc(
-                color = Color.Red,
+                color = primary,
                 startAngle = -90f,
                 sweepAngle = (360 * (currentPercentage.value * 0.1)).toFloat(),
                 useCenter = false,
@@ -64,7 +64,7 @@ fun VoteAverageRatingIndicator(
         }
         Text(
             text = "${(currentPercentage.value * number).toInt()}%",
-//            color = primaryPink,
+            color = primary,
             fontSize = fontSize,
             fontWeight = FontWeight.Bold
         )

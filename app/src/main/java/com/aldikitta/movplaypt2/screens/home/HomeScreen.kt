@@ -625,7 +625,6 @@ fun GenreOptionV2(
     val selected by remember {
         mutableStateOf(true)
     }
-
     LazyRow(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -652,6 +651,7 @@ fun GenreOptionV2(
                         viewModel.getOnTheAirTvShows(genre.id)
                         viewModel.getPopularTvShows(genre.id)
                     }
+
                 },
                 label = { Text(genre.name) },
                 selectedIcon = {
