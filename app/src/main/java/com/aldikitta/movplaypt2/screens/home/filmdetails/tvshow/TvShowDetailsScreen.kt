@@ -1,10 +1,16 @@
 package com.aldikitta.movplaypt2.screens.home.filmdetails.tvshow
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aldikitta.movplaypt2.data.remote.responses.CreditResponse
 import com.aldikitta.movplaypt2.data.remote.responses.tvshowresponses.TvShowDetails
@@ -36,7 +42,7 @@ fun TvShowDetailsScreen(
     }.value
 
     //includes Film Genre
-    Box {
+    Box{
         if (details is Resource.Success) {
             FilmInfo(
                 scrollState = scrollState,

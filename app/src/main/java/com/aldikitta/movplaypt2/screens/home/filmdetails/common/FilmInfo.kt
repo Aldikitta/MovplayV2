@@ -32,34 +32,52 @@ fun FilmInfo(
     casts: Resource<CreditResponse>,
     navigator: DestinationsNavigator
 ) {
-    Spacer(modifier = Modifier.height(8.dp))
-
-    LazyColumn(
-        contentPadding = PaddingValues(top = AppBarExpendedHeight), state = scrollState
+//    Spacer(modifier = Modifier.height(8.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
     ) {
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
-            ) {
-                Text(
-                    text = "Release Date",
+        Text(
+            text = "Release Date",
 
-                    )
-                Text(
-                    text = releaseDate,
+            )
+        Text(
+            text = releaseDate,
 
-                    )
-                ExpandableText(text = overview)
-            }
-        }
-        item {
-            if (casts is Resource.Success) {
-                CastDetails(creditsResponse = casts.data!!, navigator = navigator)
-            }
+            )
+        ExpandableText(text = overview)
+        if (casts is Resource.Success) {
+            CastDetails(creditsResponse = casts.data!!, navigator = navigator)
         }
     }
+//    LazyColumn(
+//        contentPadding = PaddingValues(top = AppBarExpendedHeight),
+//        state = scrollState
+//    ) {
+//        item {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(horizontal = 8.dp)
+//            ) {
+//                Text(
+//                    text = "Release Date",
+//
+//                    )
+//                Text(
+//                    text = releaseDate,
+//
+//                    )
+//                ExpandableText(text = overview)
+//            }
+//        }
+//        item {
+//            if (casts is Resource.Success) {
+//                CastDetails(creditsResponse = casts.data!!, navigator = navigator)
+//            }
+//        }
+//    }
 }
 
 @Composable

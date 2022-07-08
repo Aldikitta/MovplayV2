@@ -6,8 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.SmallTopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -22,7 +25,9 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.aldikitta.movplaypt2.R
 import com.aldikitta.movplaypt2.data.local.Favorite
 import com.aldikitta.movplaypt2.screens.favorites.FavoritesViewModel
@@ -64,18 +69,17 @@ fun FilmImageBanner(
             )
             .offset { IntOffset(x = 0, y = -offset) },
         title = {
-
         },
         actions = {
             Column {
-                Box {
+                Box{
                     Image(
-                        painter = rememberImagePainter(
-                            data = posterUrl,
-                            builder = {
-                                placeholder(R.drawable.placeholder)
-                                crossfade(true)
-                            }
+                        painter = rememberAsyncImagePainter(
+                            ImageRequest.Builder(LocalContext.current).data(data = posterUrl)
+                                .apply(block = fun ImageRequest.Builder.() {
+                                    placeholder(R.drawable.placeholder)
+                                    crossfade(true)
+                                }).build()
                         ),
                         modifier = Modifier
                             .fillMaxSize()
@@ -86,7 +90,6 @@ fun FilmImageBanner(
                         contentScale = ContentScale.Crop,
                         contentDescription = "Movie Banner"
                     )
-
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -99,10 +102,10 @@ fun FilmImageBanner(
                                 )
                             )
                     )
-                FilmNameAndRating(
-                    filmName = filmName,
-                    rating = rating
-                )
+                    FilmNameAndRating(
+                        filmName = filmName,
+                        rating = rating
+                    )
                 }
             }
         }
@@ -120,8 +123,6 @@ fun FilmImageBanner(
                 navigator.popBackStack()
             }
         )
-
-
         CircularFavoriteButtons(
             isLiked = viewModel.isAFavorite(filmId).observeAsState().value != null,
             onClick = { isFav ->
