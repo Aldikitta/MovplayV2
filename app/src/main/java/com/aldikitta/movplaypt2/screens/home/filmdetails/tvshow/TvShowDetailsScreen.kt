@@ -1,23 +1,21 @@
 package com.aldikitta.movplaypt2.screens.home.filmdetails.tvshow
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aldikitta.movplaypt2.data.remote.responses.CreditResponse
 import com.aldikitta.movplaypt2.data.remote.responses.tvshowresponses.TvShowDetails
 import com.aldikitta.movplaypt2.screens.favorites.FavoritesViewModel
 import com.aldikitta.movplaypt2.screens.home.filmdetails.FilmDetailsViewModel
-import com.aldikitta.movplaypt2.screens.home.filmdetails.common.FilmImageBanner
 import com.aldikitta.movplaypt2.screens.home.filmdetails.common.FilmInfo
+import com.aldikitta.movplaypt2.screens.home.filmdetails.common.ImageSection
 import com.aldikitta.movplaypt2.util.Constants
 import com.aldikitta.movplaypt2.util.Resource
 import com.ramcosta.composedestinations.annotation.Destination
@@ -41,29 +39,38 @@ fun TvShowDetailsScreen(
         value = viewModel.getTvShowCasts(filmId)
     }.value
 
-    //includes Film Genre
-    Box{
-        if (details is Resource.Success) {
-            FilmInfo(
-                scrollState = scrollState,
-                overview = details.data?.overview.toString(),
-                releaseDate = details.data?.firstAirDate.toString(),
-                navigator = navigator,
-                casts = casts
-            )
-            FilmImageBanner(
-                scrollState = scrollState,
-                posterUrl = "${Constants.IMAGE_BASE_URL}/${details.data?.posterPath}",
-                filmName = details.data?.name.toString(),
-                filmId = details.data?.id!!,
-                filmType = "tv",
-                releaseDate = details.data.firstAirDate,
-                rating = details.data.voteAverage.toFloat(),
-                navigator = navigator,
-                viewModel = favoritesViewModel
-            )
-        } else {
-            CircularProgressIndicator()
+    LazyColumn() {
+        item {
+            if (details is Resource.Success) {
+
+                Box {
+                    ImageSection(
+                        posterUrl = "${Constants.IMAGE_BASE_URL}/${details.data?.backdropPath}",
+                        filmName = details.data?.name.toString(),
+                        filmId = details.data?.id!!,
+                        filmType = "movie",
+                        releaseDate = details.data.firstAirDate,
+                        rating = details.data.voteAverage?.toFloat()!!,
+                        navigator = navigator,
+                        viewModel = favoritesViewModel
+                    )
+                }
+                FilmInfo(
+                    scrollState = scrollState,
+                    overview = details.data?.overview.toString(),
+                    releaseDate = details.data?.firstAirDate.toString(),
+                    navigator = navigator,
+                    casts = casts
+                )
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
         }
     }
 }
