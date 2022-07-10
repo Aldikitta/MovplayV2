@@ -22,6 +22,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -36,7 +37,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.aldikitta.movplaypt2.R
 import com.aldikitta.movplaypt2.model.Genre
 import com.aldikitta.movplaypt2.model.Search
@@ -67,7 +70,6 @@ fun SearchScreen(
             title = {
                 Text(
                     text = "Search",
-                    fontWeight = FontWeight.SemiBold
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -208,6 +210,7 @@ fun SearchBar(
     TextField(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(8.dp)
             .focusRequester(focusRequester),
         value = searchTerm,
         onValueChange = {
@@ -220,34 +223,17 @@ fun SearchBar(
                 text = "Search...",
             )
         },
-//        keyboardOptions = KeyboardOptions(
-//            capitalization = KeyboardCapitalization.Words,
-//            autoCorrect = true,
-//            keyboardType = KeyboardType.Text,
-//        ),
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Words,
+            autoCorrect = true,
+            keyboardType = KeyboardType.Text,
+        ),
         maxLines = 1,
         singleLine = true,
         trailingIcon = {
-//            if (searchTerm.trim().isNotEmpty()) {
-//                IconButton(onClick = {
-//                    searchTerm = ""
-//
-//                }) {
-//                    Icon(Icons.Filled.Clear, contentDescription = "abort")
-//
-//                }
-//            } else {
-//                IconButton(onClick = {
-//                    onSearch(searchTerm)
-//                }) {
-//                    Icon(Icons.Filled.Search, contentDescription = "abort")
-//
-//                }
-//            }
             IconButton(onClick = { onSearch(searchTerm) }) {
                 Icon(
                     imageVector = Icons.Default.Search,
-                    tint = Color.Green,
                     contentDescription = null
                 )
             }
@@ -275,12 +261,13 @@ fun SearchItem(
     ) {
         Row {
             Image(
-                painter = rememberImagePainter(
-                    data = "${Constants.IMAGE_BASE_URL}/${search?.posterPath}",
-                    builder = {
-                        placeholder(R.drawable.placeholder)
-                        crossfade(true)
-                    }
+                painter = rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(data = "${Constants.IMAGE_BASE_URL}/${search?.posterPath}")
+                        .apply(block = fun ImageRequest.Builder.() {
+                            placeholder(R.drawable.placeholder)
+                            crossfade(true)
+                        }).build()
                 ),
                 modifier = Modifier
                     .fillMaxWidth(0.3f),
@@ -297,9 +284,8 @@ fun SearchItem(
                 Text(
                     text = (search?.name ?: search?.originalName ?: search?.originalTitle
                     ?: "No title provided"),
-                    color = Color.White,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp
+                    style = MaterialTheme.typography.titleMedium
                 )
 
 
@@ -310,9 +296,7 @@ fun SearchItem(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Right,
                         text = it,
-                        color = Color.White,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 10.sp
                     )
                 }
 
@@ -341,11 +325,8 @@ fun SearchItem(
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(5.dp),
+                                .padding(end = 5.dp),
                             text = genre.name,
-                            color = Color.Red,
-                            fontWeight = FontWeight.Light,
-                            fontSize = 9.sp
                         )
                     }
                 }
@@ -355,11 +336,8 @@ fun SearchItem(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = search?.overview ?: "No description",
-                    color = Color.White,
-                    fontWeight = FontWeight.Light,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
-                    fontSize = 11.sp
                 )
             }
         }
