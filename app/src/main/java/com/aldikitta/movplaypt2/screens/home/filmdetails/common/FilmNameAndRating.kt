@@ -1,6 +1,7 @@
 package com.aldikitta.movplaypt2.screens.home.filmdetails.common
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +19,7 @@ fun FilmNameAndRating(
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 8.dp, vertical = 8.dp),
+            .padding(horizontal = 8.dp, vertical = 16.dp),
         verticalAlignment = Alignment.Bottom
     ) {
         Row(
@@ -28,14 +29,11 @@ fun FilmNameAndRating(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                modifier = Modifier
-                    .fillMaxWidth(0.83f),
                 text = filmName,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleLarge
             )
             VoteAverageRatingIndicator(
-                modifier = Modifier
-                    .fillMaxWidth(0.17f),
                 percentage = rating
             )
         }
