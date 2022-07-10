@@ -31,7 +31,6 @@ fun FilmNameAndRating(
                 modifier = Modifier
                     .fillMaxWidth(0.83f),
                 text = filmName,
-                fontSize = 17.sp,
                 fontWeight = FontWeight.Bold
             )
             VoteAverageRatingIndicator(
