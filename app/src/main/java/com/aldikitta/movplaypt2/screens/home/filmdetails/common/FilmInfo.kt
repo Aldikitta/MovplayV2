@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -39,45 +40,20 @@ fun FilmInfo(
             .padding(horizontal = 8.dp)
     ) {
         Text(
-            text = "Release Date",
-
+            text = "Release Date:",
+            style = MaterialTheme.typography.titleMedium
             )
         Text(
             text = releaseDate,
-
-            )
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         ExpandableText(text = overview)
         if (casts is Resource.Success) {
             CastDetails(creditsResponse = casts.data!!, navigator = navigator)
         }
     }
-//    LazyColumn(
-//        contentPadding = PaddingValues(top = AppBarExpendedHeight),
-//        state = scrollState
-//    ) {
-//        item {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 8.dp)
-//            ) {
-//                Text(
-//                    text = "Release Date",
-//
-//                    )
-//                Text(
-//                    text = releaseDate,
-//
-//                    )
-//                ExpandableText(text = overview)
-//            }
-//        }
-//        item {
-//            if (casts is Resource.Success) {
-//                CastDetails(creditsResponse = casts.data!!, navigator = navigator)
-//            }
-//        }
-//    }
 }
 
 @Composable
@@ -127,9 +103,7 @@ fun ExpandableText(
     }
     Box(modifier) {
         Text(
-            color = Color.LightGray,
             text = cutText ?: text,
-            fontSize = 13.sp,
             modifier = Modifier
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
@@ -144,10 +118,8 @@ fun ExpandableText(
         if (!expanded) {
             val density = LocalDensity.current
             Text(
-                // Fixme: Use your app theme color
                 text = "... See more",
                 fontWeight = FontWeight.Bold,
-                fontSize = 13.sp,
                 onTextLayout = { seeMoreSizeState.value = it.size },
                 modifier = Modifier
                     .then(

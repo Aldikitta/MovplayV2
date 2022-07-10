@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,8 +39,7 @@ fun CastDetails(
             Text(
                 text = "Cast",
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                color = Color.White,
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
                     .padding(
                         start = 8.dp
@@ -49,12 +50,12 @@ fun CastDetails(
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "View all",
-                    fontWeight = FontWeight.ExtraLight,
-                    fontSize = 18.sp,
-                    color = Color.White
-                )
+//                Text(
+//                    text = "View all",
+//                    fontWeight = FontWeight.ExtraLight,
+//                    fontSize = 18.sp,
+//                    color = Color.White
+//                )
 
                 IconButton(onClick = {
                     Timber.d("${creditsResponse == null}")
@@ -65,7 +66,7 @@ fun CastDetails(
                     navigator.navigate(CastsScreenDestination(creditsResponse))
                 }) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowRight,
+                        imageVector = Icons.Filled.ArrowForward,
                         contentDescription = null
                     )
                 }
@@ -76,7 +77,7 @@ fun CastDetails(
         LazyRow(content = {
             items(creditsResponse?.cast!!) { cast ->
                 CastItem(
-                    size = 90.dp,
+                    size = 130.dp,
                     castImageUrl = "${Constants.IMAGE_BASE_URL}/${cast.profilePath}",
                     castName = cast.name
                 )

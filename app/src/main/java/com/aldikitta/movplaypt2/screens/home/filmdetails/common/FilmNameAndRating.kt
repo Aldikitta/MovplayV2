@@ -31,7 +31,7 @@ fun FilmNameAndRating(
             Text(
                 text = filmName,
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.headlineSmall
             )
             VoteAverageRatingIndicator(
                 percentage = rating

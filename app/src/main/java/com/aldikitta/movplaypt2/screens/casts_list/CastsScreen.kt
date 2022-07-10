@@ -34,8 +34,6 @@ fun CastsScreen(
             title = {
                 Text(
                     text = "Casts",
-                    color = Color.White,
-                    fontWeight = FontWeight.SemiBold
                 )
             },
             showBackArrow = true
@@ -57,7 +55,7 @@ fun CastsScreen(
                 }
 
                 CastItem(
-                    size = 170.dp,
+                    size = 200.dp,
                     castImageUrl = "${Constants.IMAGE_BASE_URL}/$imageLink",
                     castName = cast.name
                 )
