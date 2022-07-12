@@ -1,3 +1,3 @@
 # MovplayV2
 
-Detail coming soon
+Detail coming very soon
