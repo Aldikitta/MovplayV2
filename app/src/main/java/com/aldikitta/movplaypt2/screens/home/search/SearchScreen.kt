@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
@@ -27,6 +29,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -52,7 +55,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import retrofit2.HttpException
 import java.io.IOException
 
-@OptIn(ExperimentalFoundationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
+@OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Destination(start = false)
 @Composable
 fun SearchScreen(
@@ -68,25 +71,25 @@ fun SearchScreen(
         MovplayToolbar(
             navigator = navigator,
             title = {
-                Text(
-                    text = "Search",
+                SearchBar(
+                    viewModel = viewModel,
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(67.dp)
+//                        .padding(8.dp),
+                    onSearch = { searchParam ->
+                        viewModel.searchAll(searchParam)
+                    }
                 )
+//                Text(
+//                    text = "Search",
+//                )
             },
-            modifier = Modifier.fillMaxWidth(),
+//            modifier = Modifier.fillMaxWidth(),
             showBackArrow = true
         )
 
-        SearchBar(
-            viewModel = viewModel,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(67.dp)
-                .padding(8.dp),
-            onSearch = { searchParam ->
-                viewModel.searchAll(searchParam)
-//                keyboardController?.hide()
-            }
-        )
+
 
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -197,6 +200,7 @@ fun SearchScreen(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
     viewModel: SearchViewModel,
@@ -206,15 +210,16 @@ fun SearchBar(
 
     var searchTerm = viewModel.searchTerm.value
     val focusRequester = FocusRequester()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var text by remember { mutableStateOf("") }
 
     TextField(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .focusRequester(focusRequester),
-        value = searchTerm,
+            .fillMaxWidth(),
+//            .focusRequester(focusRequester),
+        value = text,
         onValueChange = {
-            searchTerm = it
+            text = it
             viewModel.setSearchTerm(it)
             viewModel.searchAll(it)
         },
@@ -227,21 +232,48 @@ fun SearchBar(
             capitalization = KeyboardCapitalization.Words,
             autoCorrect = true,
             keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onSearch(searchTerm)
+                keyboardController?.hide()
+            }
         ),
         maxLines = 1,
         singleLine = true,
         trailingIcon = {
-            IconButton(onClick = { onSearch(searchTerm) }) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = null
-                )
+            if (text.trim().isNotEmpty()) {
+                IconButton(onClick = {
+                    text = ""
+                }) {
+                    Icon(Icons.Filled.Clear, contentDescription = "abort")
+                }
+            } else {
+                IconButton(onClick = {
+                    onSearch(searchTerm)
+                }) {
+                    Icon(Icons.Filled.Search, contentDescription = "abort")
+                }
             }
+//            IconButton(onClick = { onSearch(searchTerm) }) {
+//                Icon(
+//                    imageVector = Icons.Default.Search,
+//                    contentDescription = null
+//                )
+//            }
         },
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
+        )
+
     )
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
+//    LaunchedEffect(Unit) {
+//        focusRequester.requestFocus()
+//    }
 }
 
 
