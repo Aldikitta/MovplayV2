@@ -7,6 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -19,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -48,6 +51,7 @@ import com.aldikitta.movplaypt2.model.Genre
 import com.aldikitta.movplaypt2.model.Search
 import com.aldikitta.movplaypt2.screens.commons.MovplayToolbar
 import com.aldikitta.movplaypt2.screens.destinations.MovieDetailsScreenDestination
+import com.aldikitta.movplaypt2.screens.destinations.TvShowDetailsScreenDestination
 import com.aldikitta.movplaypt2.screens.home.HomeViewModel
 import com.aldikitta.movplaypt2.util.Constants
 import com.ramcosta.composedestinations.annotation.Destination
@@ -88,50 +92,88 @@ fun SearchScreen(
 //            modifier = Modifier.fillMaxWidth(),
             showBackArrow = true
         )
-
-
-
-        Box(
+        Surface(
             modifier = Modifier.fillMaxSize(),
         ) {
 
-            LazyColumn(
-                contentPadding = PaddingValues(8.dp),
-                verticalArrangement = Arrangement.Top
-            ) {
-                items(searchResult) { search ->
-                    SearchItem(
-                        search,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(130.dp)
-                            .padding(4.dp),
-                        onClick = {
-                            when (search?.mediaType) {
-                                "movie" -> {
-                                    navigator.navigate(MovieDetailsScreenDestination(search.id!!))
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                content = {
+                    items(searchResult.itemCount) { index ->
+                        searchResult[index]?.let { search ->
+                            SearchItem(
+                                search,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(130.dp)
+                                    .padding(4.dp),
+                                onClick = {
+                                    when (search?.mediaType) {
+                                        "movie" -> {
+                                            navigator.navigate(MovieDetailsScreenDestination(search.id!!))
+                                        }
+                                        "tv" -> {
+                                            navigator.navigate(TvShowDetailsScreenDestination(search.id!!))
+                                        }
+                                        else -> {
+                                            return@SearchItem
+                                        }
+                                    }
                                 }
-                                "tv" -> {
-                                    navigator.navigate(MovieDetailsScreenDestination(search.id!!))
-                                }
-                                else -> {
-                                    return@SearchItem
-                                }
-                            }
+                            )
                         }
-                    )
-                }
 
-                if (searchResult.loadState.append == LoadState.Loading) {
-                    item {
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentWidth(Alignment.CenterHorizontally)
-                        )
+                    }
+
+                    if (searchResult.loadState.append == LoadState.Loading) {
+                        item {
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentWidth(Alignment.CenterHorizontally)
+                            )
+                        }
                     }
                 }
-            }
+            )
+
+//            LazyColumn(
+//                contentPadding = PaddingValues(8.dp),
+//                verticalArrangement = Arrangement.Top
+//            ) {
+//                items(searchResult) { search ->
+//                    SearchItem(
+//                        search,
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(130.dp)
+//                            .padding(4.dp),
+//                        onClick = {
+//                            when (search?.mediaType) {
+//                                "movie" -> {
+//                                    navigator.navigate(MovieDetailsScreenDestination(search.id!!))
+//                                }
+//                                "tv" -> {
+//                                    navigator.navigate(TvShowDetailsScreenDestination(search.id!!))
+//                                }
+//                                else -> {
+//                                    return@SearchItem
+//                                }
+//                            }
+//                        }
+//                    )
+//                }
+//
+//                if (searchResult.loadState.append == LoadState.Loading) {
+//                    item {
+//                        CircularProgressIndicator(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .wrapContentWidth(Alignment.CenterHorizontally)
+//                        )
+//                    }
+//                }
+//            }
 
             searchResult.apply {
                 when (loadState.refresh) {
@@ -161,7 +203,7 @@ fun SearchScreen(
                         Text(
                             text = when (e.error) {
                                 is HttpException -> {
-                                    "Oops, something went wrong!"
+                                    "Type Something!"
                                 }
                                 is IOException -> {
                                     "Couldn't reach server, check your internet connection!"
@@ -171,10 +213,8 @@ fun SearchScreen(
                                 }
                             },
                             modifier = Modifier
-                                .align(alignment = Alignment.Center)
                                 .padding(12.dp),
                             textAlign = TextAlign.Center,
-                            color = Color.Red
                         )
                     }
 
@@ -283,95 +323,114 @@ fun SearchItem(
     search: Search?,
     homeViewModel: HomeViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit
 ) {
-    Card(
-        modifier = modifier
+    Image(
+        painter = rememberAsyncImagePainter(
+            ImageRequest.Builder(LocalContext.current)
+                .data(data = "${Constants.IMAGE_BASE_URL}/${search?.posterPath}")
+                .apply(block = fun ImageRequest.Builder.() {
+                    placeholder(R.drawable.placeholder)
+                    crossfade(true)
+                }).build()
+        ),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .height(180.dp)
+            .padding(5.dp)
+            .clip(MaterialTheme.shapes.medium)
             .clickable {
                 onClick()
-            },
-    ) {
-        Row {
-            Image(
-                painter = rememberAsyncImagePainter(
-                    ImageRequest.Builder(LocalContext.current)
-                        .data(data = "${Constants.IMAGE_BASE_URL}/${search?.posterPath}")
-                        .apply(block = fun ImageRequest.Builder.() {
-                            placeholder(R.drawable.placeholder)
-                            crossfade(true)
-                        }).build()
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(0.3f),
-                contentScale = ContentScale.Crop,
-                contentDescription = null
-            )
-
-            Column(
-                modifier = modifier
-                    .fillMaxWidth(0.7f)
-                    .padding(8.dp)
-            ) {
-
-                Text(
-                    text = (search?.name ?: search?.originalName ?: search?.originalTitle
-                    ?: "No title provided"),
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-
-                Spacer(modifier = Modifier.height(5.dp))
-
-                (search?.firstAirDate ?: search?.releaseDate)?.let {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Right,
-                        text = it,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(5.dp))
-
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-
-                    val moviesGenres = homeViewModel.moviesGenres.value
-                    val seriesGenres = homeViewModel.tvShowsGenres.value
-
-                    var searchGenres: List<Genre> = emptyList()
-                    if (search?.mediaType == "tv") {
-                        searchGenres = seriesGenres.filter {
-                            search.genreIds?.contains(it.id)!!
-                        }
-                    }
-                    if (search?.mediaType == "movie") {
-                        searchGenres = moviesGenres.filter {
-                            search.genreIds?.contains(it.id)!!
-                        }
-                    }
-
-                    items(searchGenres) { genre ->
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(end = 5.dp),
-                            text = genre.name,
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = search?.overview ?: "No description",
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis,
-                )
             }
-        }
-    }
+    )
+//    Card(
+//        modifier = modifier
+//            .clickable {
+//                onClick()
+//            },
+//    ) {
+//        Row {
+//            Image(
+//                painter = rememberAsyncImagePainter(
+//                    ImageRequest.Builder(LocalContext.current)
+//                        .data(data = "${Constants.IMAGE_BASE_URL}/${search?.posterPath}")
+//                        .apply(block = fun ImageRequest.Builder.() {
+//                            placeholder(R.drawable.placeholder)
+//                            crossfade(true)
+//                        }).build()
+//                ),
+//                modifier = Modifier
+//                    .fillMaxWidth(0.3f),
+//                contentScale = ContentScale.Crop,
+//                contentDescription = null
+//            )
+//
+//            Column(
+//                modifier = modifier
+//                    .fillMaxWidth(0.7f)
+//                    .padding(8.dp)
+//            ) {
+//
+//                Text(
+//                    text = (search?.name ?: search?.originalName ?: search?.originalTitle
+//                    ?: "No title provided"),
+//                    fontWeight = FontWeight.Bold,
+//                    style = MaterialTheme.typography.titleMedium
+//                )
+//
+//
+//                Spacer(modifier = Modifier.height(5.dp))
+//
+//                (search?.firstAirDate ?: search?.releaseDate)?.let {
+//                    Text(
+//                        modifier = Modifier.fillMaxWidth(),
+//                        textAlign = TextAlign.Right,
+//                        text = it,
+//                        fontWeight = FontWeight.SemiBold,
+//                    )
+//                }
+//
+//                Spacer(modifier = Modifier.height(5.dp))
+//
+//                LazyRow(
+//                    modifier = Modifier.fillMaxWidth()
+//                ) {
+//
+//                    val moviesGenres = homeViewModel.moviesGenres.value
+//                    val seriesGenres = homeViewModel.tvShowsGenres.value
+//
+//                    var searchGenres: List<Genre> = emptyList()
+//                    if (search?.mediaType == "tv") {
+//                        searchGenres = seriesGenres.filter {
+//                            search.genreIds?.contains(it.id)!!
+//                        }
+//                    }
+//                    if (search?.mediaType == "movie") {
+//                        searchGenres = moviesGenres.filter {
+//                            search.genreIds?.contains(it.id)!!
+//                        }
+//                    }
+//
+//                    items(searchGenres) { genre ->
+//                        Text(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(end = 5.dp),
+//                            text = genre.name,
+//                        )
+//                    }
+//                }
+//
+//                Spacer(modifier = Modifier.height(8.dp))
+//
+//                Text(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    text = search?.overview ?: "No description",
+//                    maxLines = 3,
+//                    overflow = TextOverflow.Ellipsis,
+//                )
+//            }
+//        }
+//    }
 }
