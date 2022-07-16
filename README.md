@@ -1,5 +1,5 @@
 <p align="center"><img src="screenshot/movColored.png" alt="Movplay"</p>
-<p align="center"><img src="screenshot/summary.png" alt="Movplay"></p>
+<p align="center"><img src="screenshots/summary.png" alt="Movplay"></p>
 
 
 # Movplay
@@ -35,13 +35,13 @@ The app is built with the Model-View-ViewModel (MVVM) is its structural design p
 ## Demo
 <img src="screenshot/movgifcom.gif" width="250"/>
 
-|              Home Screen             |               Drawer Screen               |               Search Screen               |
+|         Movies Home Screen           |           Tv Shows Home Screen            |               Favorite Screen               |
 | :----------------------------------: | :---------------------------------------: | :---------------------------------------: |
-|    ![](screenshot/homeScreen.png)    |     ![](screenshot/drawerScreen.png)      |      ![](screenshot/searchScreen.png)     |
+|      ![](screenshots/Movie.png)      |       ![](screenshots/TvShow.png)         |      ![](screenshot/searchScreen.png)     |
 
-|             Movie Detail             |               Movie Detail 2              |               Artist Detail               |
+|             Movie Detail             |               Tv Show Detail              |               Artist Detail               |
 | :----------------------------------: | :---------------------------------------: | :---------------------------------------: |
-|   ![](screenshot/movieDetail.png)    |     ![](screenshot/moviedetail2.png)      |      ![](screenshot/artistDetail.png)     |
+|     ![](screenshots/Details.png)     |     ![](screenshot/moviedetail2.png)      |      ![](screenshot/artistDetail.png)     |
 
 |       Dark Theme + Dynamic Off       |          Dark Theme + Dynamic On          |          Light Theme + Dynamic On         |
 | :----------------------------------: | :---------------------------------------: | :---------------------------------------: |
