@@ -35,16 +35,16 @@ The app is built with the Model-View-ViewModel (MVVM) is its structural design p
 ## Demo
 <img src="screenshot/movgifcom.gif" width="250"/>
 
-|         Movies Home Screen           |           Tv Shows Home Screen            |               Favorite Screen               |
+|         Movies Home Screen           |           Tv Shows Home Screen            |               Favorite Screen             |
 | :----------------------------------: | :---------------------------------------: | :---------------------------------------: |
-|      ![](screenshots/Movie.png)      |       ![](screenshots/TvShow.png)         |      ![](screenshot/searchScreen.png)     |
+|      ![](screenshots/Movie.png)      |       ![](screenshots/TvShow.png)         |       ![](screenshots/Favorite.png)       |
 
-|             Movie Detail             |               Tv Show Detail              |               Artist Detail               |
+|             Movie Detail             |               Tv Show Detail              |            Search Screen Detail           |
 | :----------------------------------: | :---------------------------------------: | :---------------------------------------: |
-|     ![](screenshots/Details.png)     |     ![](screenshot/moviedetail2.png)      |      ![](screenshot/artistDetail.png)     |
+|   ![](screenshots/MovieDetails.png)  |        ![](screenshots/Details.png)       |        ![](screenshots/Search.png)        |
 
-|       Dark Theme + Dynamic Off       |          Dark Theme + Dynamic On          |          Light Theme + Dynamic On         |
+|            Account Screen            |          Dark Theme + Dynamic On          |          Light Theme + Dynamic On         |
 | :----------------------------------: | :---------------------------------------: | :---------------------------------------: |
-|  ![](screenshot/dynamicOffDark.png)  |     ![](screenshot/dynamicOnDark.png)     |    ![](screenshot/dynamicOnLight.png)     |
+|     ![](screenshots/Account.png)     |     ![](screenshots/MovieDynamic.png)     |     ![](screenshots/TvShowDynamic.png)    |
 
 
