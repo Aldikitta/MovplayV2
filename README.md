@@ -1,4 +1,4 @@
-<p align="center"><img src="screenshot/movColored.png" alt="Movplay"</p>
+<p align="center"><img src="screenshots/movColored.png" alt="Movplay"</p>
 <p align="center"><img src="screenshots/summary.png" alt="Movplay"></p>
 
 
