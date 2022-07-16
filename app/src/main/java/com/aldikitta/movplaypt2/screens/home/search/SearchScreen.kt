@@ -117,7 +117,7 @@ fun SearchScreen(
                                 Image(
                                     modifier = Modifier
                                         .size(250.dp),
-                                    painter = painterResource(id = R.drawable.movcolored),
+                                    painter = painterResource(id = R.drawable.error),
                                     contentDescription = null
                                 )
                             }
@@ -153,7 +153,7 @@ fun SearchScreen(
                                 Image(
                                     modifier = Modifier
                                         .size(250.dp),
-                                    painter = painterResource(id = R.drawable.movcolored),
+                                    painter = painterResource(id = R.drawable.error),
                                     contentDescription = null
                                 )
                             }

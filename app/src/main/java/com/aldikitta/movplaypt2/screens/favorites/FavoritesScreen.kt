@@ -160,7 +160,7 @@ fun FavoritesScreen(
                 Image(
                     modifier = Modifier
                         .size(250.dp),
-                    painter = painterResource(id = R.drawable.ic_empty_cuate),
+                    painter = painterResource(id = R.drawable.favorite),
                     contentDescription = null
                 )
             }
@@ -267,12 +267,12 @@ fun FilmDetails(
                     fontWeight = FontWeight.SemiBold,
                     style = MaterialTheme.typography.titleLarge,
                     color = Color.White,
-                    )
+                )
                 androidx.compose.material3.Text(
                     text = releaseDate,
                     color = Color.White,
                     style = MaterialTheme.typography.titleMedium,
-                    )
+                )
             }
             VoteAverageRatingIndicator(
                 percentage = rating
