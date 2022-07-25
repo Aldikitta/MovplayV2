@@ -3,7 +3,7 @@
 
 
 # Movplay V2
-This is the version 2 of An Android app built with Jetpack Compose consuming [TMDB API](https://www.themoviedb.org/documentation/api) to help movies to have current information of the trending, popular, upcoming many other films.
+This is the version 2 of An Android app built with Jetpack Compose consuming [TMDB API](https://www.themoviedb.org/documentation/api) to help users to have current information of the trending, popular, upcoming many other films.
 
 
 ### Structural design pattern
