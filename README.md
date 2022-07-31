@@ -34,7 +34,7 @@ The app is built with the Model-View-ViewModel (MVVM) is its structural design p
 
 
 ## Demo
-<img src="screenshot/movgifcom.gif" width="250"/>
+<img src="screenshots/Movplayv2Comp.gif" width="250"/>
 
 |         Movies Home Screen           |           Tv Shows Home Screen            |               Favorite Screen             |
 | :----------------------------------: | :---------------------------------------: | :---------------------------------------: |
