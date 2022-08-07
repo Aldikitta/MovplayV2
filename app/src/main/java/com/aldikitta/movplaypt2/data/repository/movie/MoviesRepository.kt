@@ -16,14 +16,14 @@ import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(private val movieApi: MovieTMDBApi) {
     fun getTrendingMoviesThisWeek() = Pager(
-        config = PagingConfig(enablePlaceholders = false, pageSize = 1),
+        config = PagingConfig(enablePlaceholders = false, pageSize = 20),
         pagingSourceFactory = {
             TrendingMoviesSource(movieApi)
         }
     ).flow
 
     fun getUpcomingMovies() = Pager(
-        config = PagingConfig(enablePlaceholders = false, pageSize = 1),
+        config = PagingConfig(enablePlaceholders = false, pageSize = 20),
         pagingSourceFactory = {
             UpcomingMoviesSource(movieApi)
         }
@@ -31,7 +31,7 @@ class MoviesRepository @Inject constructor(private val movieApi: MovieTMDBApi) {
 
 
     fun getTopRatedMovies() = Pager(
-        config = PagingConfig(enablePlaceholders = false, pageSize = 1),
+        config = PagingConfig(enablePlaceholders = false, pageSize = 20),
         pagingSourceFactory = {
             TopRatedMoviesSource(movieApi)
         }
@@ -41,11 +41,11 @@ class MoviesRepository @Inject constructor(private val movieApi: MovieTMDBApi) {
         pagingSourceFactory = {
             NowPlayingMoviesSource(movieApi)
         },
-        config = PagingConfig(pageSize = 1, enablePlaceholders = false)
+        config = PagingConfig(pageSize = 20, enablePlaceholders = false)
     ).flow
 
     fun getPopularMovies() = Pager(
-        config = PagingConfig(enablePlaceholders = false, pageSize = 1),
+        config = PagingConfig(enablePlaceholders = false, pageSize = 20),
         pagingSourceFactory = {
             PopularMoviesSource(movieApi)
         }
